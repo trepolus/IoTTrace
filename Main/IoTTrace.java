@@ -39,9 +39,7 @@ public class IoTTrace {
 
   public static void main(String[] args) {
 
-    List smartHomeData = new ArrayList<String>();
-
-    smartHomeData = readFile("data/bsp.csv");
+    List smartHomeData = readFile("data/bsp.csv");
 
     for (int i = 0; i < smartHomeData.size()-1; i++) {
       String line = (String) smartHomeData.get(i);
