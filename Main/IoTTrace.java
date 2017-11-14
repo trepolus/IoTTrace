@@ -3,6 +3,8 @@ package Main;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +24,15 @@ public class IoTTrace {
     {
       BufferedReader reader = new BufferedReader(new FileReader(filename));
       String line;
+
+
+
       while ((line = reader.readLine()) != null)
       {
-        allData.add(line);
+
+        String regex = "\"(.*?)";
+        String[] linearray = line.split(regex);
+        allData.add(linearray[5]);
       }
       reader.close();
       return allData;
@@ -37,14 +45,25 @@ public class IoTTrace {
     }
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
 
     List smartHomeData = readFile("data/bsp.csv");
+
+
+    File file = new File("data/bsp_coordinates.txt");
+    FileWriter writer = new FileWriter("data/bsp_coordinates.csv");
+
 
     for (int i = 0; i < smartHomeData.size()-1; i++) {
       String line = (String) smartHomeData.get(i);
 
+      // Writes the content to the file
+      writer.write(line+"\n");
       System.out.println(line);
     }
+    writer.flush();
+    writer.close();
+
+
   }
 }
