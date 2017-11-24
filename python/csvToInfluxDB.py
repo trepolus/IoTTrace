@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-"""Tutorial on using the InfluxDB client."""
-
 import argparse
 import csv
 
@@ -8,21 +6,23 @@ from influxdb import InfluxDBClient
 
 
 def main(host='localhost', port=8086):
-
     """Instantiate a connection to the InfluxDB."""
     user = 'root'
     password = 'root'
+
+    """This is the database name if you want to specify it"""
     dbname = 'taxi0228'
 
     client = InfluxDBClient(host, port, user, password, dbname)
 
+    """Drop previous database (if not needed comment out following two lines) and create new database"""
     print("Drop database: " + dbname)
     client.drop_database(dbname)
 
     print("Create database: " + dbname)
     client.create_database(dbname)
 
-    """ Read and categorise data from given csv file"""
+    """ Collections to hold csv data"""
     id = list()
     taxiID = list()
     longitude = list()
@@ -35,15 +35,21 @@ def main(host='localhost', port=8086):
     reversed = list()
     query = 'SELECT * FROM "' + dbname + '"."autogen"."' + dbname + '"  GROUP BY * ORDER BY DESC LIMIT 100'
 
+    """This is the filePath you have to specify"""
+    filePath = '../data/taxi0228.csv'
+
     print("Writing data to InfluxDB.......")
 
-    with open('../data/taxi0228.csv', newline='') as f:
+    with open(filePath, newline='') as f:
         reader = csv.reader(f)
         rownum = 0
 
         for row in reader:
+            """
+            # remove comment brackets if you just want to read in certain lines, e.g. the first 1000
             if rownum >= 1000:
                 break
+            """
             column = 0
             for col in row:
 
@@ -91,9 +97,11 @@ def main(host='localhost', port=8086):
                 }
             ]
             client.write_points(json_body)
-            #print("Write points: {0}".format(json_body))
+            """remove " # " if you want to print out every line"""
+            # print("Write points: {0}".format(json_body))
             rownum = rownum + 1
 
+    """ print out last 100 lines to check if data is in InfluxDB"""
     print("Data was successfully commited!\n\n")
     print("Get the last 100 rows in database: \n")
     print("Querying data: " + query)
@@ -101,6 +109,7 @@ def main(host='localhost', port=8086):
     for row in result:
         for col in row:
             print(col)
+
 
 def parse_args():
     """Parse the args."""
