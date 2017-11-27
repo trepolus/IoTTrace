@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import argparse
 import csv
+import geohash
 
 from influxdb import InfluxDBClient
 
@@ -33,7 +34,7 @@ def main(host='localhost', port=8086):
     status = list()
     extendedStatus = list()
     reversed = list()
-    query = 'SELECT * FROM "' + dbname + '"."autogen"."' + dbname + '"  GROUP BY * ORDER BY DESC LIMIT 100'
+    query = 'SELECT * FROM "' + dbname + '"."autogen"."' + dbname + '"  GROUP BY * ORDER BY DESC LIMIT 10'
 
     """This is the filePath you have to specify"""
     filePath = '../data/taxi0228.csv'
@@ -76,11 +77,14 @@ def main(host='localhost', port=8086):
 
                 column = column + 1
 
+            geohash1 = geohash.encode(float(latitude[rownum]), float(longitude[rownum]))
+
             json_body = [
                 {
                     "measurement": "taxi0228",
                     "tags": {
-                        "region": "shanghai"
+                        "region": "shanghai",
+                        "geohash": geohash1
                     },
                     "fields": {
                         "id": id[rownum],

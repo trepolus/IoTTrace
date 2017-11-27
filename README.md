@@ -21,6 +21,21 @@ Get Texmaker to edit the Report. We use the IEEEtran template.
 
 *** more instructions coming ***
 
+## Python
+
+Install geogash:
+On Windows:
+1. Go to C:/Python*/Scripts
+2. Execute: pip install geogash
+
+If it is not possible run the code, try this:
+Rename the package name to be geohash rather than Geohash and then change __init__.py to import from .geohash (with a dot in front of the module name) rather than from geohash
+
+## Grafana
+
+Plugins:
+* WorldMap Panel: https://grafana.com/plugins/grafana-worldmap-panel/installation
+
 ## Read Data into InfluxDB (Python)
 
 1. Put the taxi.csv you want to read in into the data folder
