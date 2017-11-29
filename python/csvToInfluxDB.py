@@ -34,7 +34,7 @@ def main(host='localhost', port=8086):
     status = list()
     extendedStatus = list()
     reversed = list()
-    query = 'SELECT * FROM "' + dbname + '"."autogen"."' + dbname + '"  GROUP BY * ORDER BY DESC LIMIT 10'
+    query = 'SELECT * FROM "' + dbname + '"."autogen"."' + dbname + '"  GROUP BY id ORDER BY DESC LIMIT 100'
 
     """This is the filePath you have to specify"""
     filePath = '../data/taxi0228.csv'
@@ -46,11 +46,11 @@ def main(host='localhost', port=8086):
         rownum = 0
 
         for row in reader:
-            """
+            '''
             # remove comment brackets if you just want to read in certain lines, e.g. the first 1000
-            if rownum >= 1000:
+            if rownum >= 300:
                 break
-            """
+            '''
             column = 0
             for col in row:
 

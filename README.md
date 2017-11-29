@@ -23,10 +23,10 @@ Get Texmaker to edit the Report. We use the IEEEtran template.
 
 ## Python
 
-Install geogash:
+Install geohash:
 On Windows:
 1. Go to C:/Python*/Scripts
-2. Execute: pip install geogash
+2. Execute: pip install geohash
 
 If it is not possible run the code, try this:
 Rename the package name to be geohash rather than Geohash and then change __init__.py to import from .geohash (with a dot in front of the module name) rather than from geohash
