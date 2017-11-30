@@ -3,9 +3,9 @@
 \usepackage[english]{babel}
 \author{Lucas Colantuono, Lucas Kummer, Shanan Lynch, Samuel Sedlmeir}
 
-\title{IoT Trace Analysis: Topic}
+\title{Improving local transports by analysing taxi meta data}
 \date{\today}
-\markboth{IoT Trace Analysis}{}
+\markboth{Improving local transports by analysing taxi meta data}{}
 
 \begin{document}
 
@@ -15,16 +15,24 @@
 \newpage
 
 \begin{abstract}
-Something abstract Something abstract Something abstract Something abstract Something abstract Something abstract Something abstract Something abstract Something abstract Something abstract Something abstract Something abstract 
+ 
 \end{abstract}
 
 \section{Introduction}
 \label{sec:Introduction}
-In the future there might be a big demand for XXX. To predict the rise of it, we use data collected by taxis in Shanghai in 2007. These data contain GPS positions, a timestamp, the direction in which the taxi is moving as well as a Taxi ID. In order to analyze this data we set up a InfluxDB Database and a Chronograf and Grafana Web Server, where the data is being inserted to by using a Python script.
+All over the world big cities are struggling to fight against air pollution as a result of individual transport. This does not just concern developing countries or emerging countries, but also developed first world countries: Beijing will ban certain cars to prevent an overriding of the emission limits \cite{beij}, whereas the city of Oxford is planning to establish a petrol car free zone \cite{oxfo}. \\
+While bans forbid people to use their cars, a more sustainable way would be to make people use the local transport voluntarily by improving it where necessary. Thus we need a reliable possibility to learn about people's possible needs. As a lot of people choose a taxi where there is a unsatisfying offer of transport, we could use taxi meta data in order to analyse automatically possible useful routes for new bus lines for example. \\
+To achieve this goal, we use data collected by taxis in Shanghai in 2007. These data contain GPS positions, a timestamp, the status, the direction in which the taxi is moving as well as a Taxi ID. In order to analyse this data we set up a InfluxDB Database and a Chronograf and Grafana Web Server, where the data is being inserted to by using a Python script.
 \section{Related work}
+There are several different articles, that analyse the same dataset.
 \section{Problem formulation}
+The main problem is to find routes, that a bigger number of taxi trips have in common. Therefore we could concentrate on taxi routes with a close place of departure and/or a close destination.
 \section{Analysis}
 \section{Results}
 \section{Summary}
+
+\newpage
+\bibliography{biblio}
+\bibliographystyle{IEEEtran}
 
 \end{document}
