@@ -1,4 +1,5 @@
-from datetime import datetime, time
+from datetime import datetime
+import time
 
 oldTime = "2006-02-27 17:34:31"
 

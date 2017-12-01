@@ -4,6 +4,18 @@ import csv
 import geohash
 
 from influxdb import InfluxDBClient
+from datetime import datetime
+import time
+
+
+def timeChanger(timeToChange):
+    timeFormat = datetime.strptime(timeToChange, "%Y-%m-%d %H:%M:%S")
+
+    nanoTime = time.mktime(timeFormat.timetuple())
+    nanoTime = nanoTime * 1000000000
+
+    return nanoTime
+
 
 def main(host='localhost', port=8086):
     """Instantiate a connection to the InfluxDB."""
@@ -85,7 +97,7 @@ def main(host='localhost', port=8086):
                         "region": "shanghai",
                         "geohash": geohash1
                     },
-                    "time": datetime[rownum],
+                    "time": int(timeChanger(datetime[rownum])),
                     "fields": {
                         "id": int(id[rownum]),
                         "taxiID": taxiID[rownum],
