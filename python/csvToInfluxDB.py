@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import argparse
 import csv
-import geohash
+import Geohash
 
 from influxdb import InfluxDBClient
 
@@ -46,11 +46,11 @@ def main(host='localhost', port=8086):
         rownum = 0
 
         for row in reader:
-            '''
+            # '''
             # remove comment brackets if you just want to read in certain lines, e.g. the first 1000
-            if rownum >= 300:
+            # if rownum >= 200:
                 break
-            '''
+            # '''
             column = 0
             for col in row:
 
@@ -77,7 +77,7 @@ def main(host='localhost', port=8086):
 
                 column = column + 1
 
-            geohash1 = geohash.encode(float(latitude[rownum]), float(longitude[rownum]))
+            geohash1 = Geohash.encode(float(latitude[rownum]), float(longitude[rownum]))
 
             json_body = [
                 {
@@ -87,16 +87,16 @@ def main(host='localhost', port=8086):
                         "geohash": geohash1
                     },
                     "fields": {
-                        "id": id[rownum],
+                        "id": int(id[rownum]),
                         "taxiID": taxiID[rownum],
                         "longitude": longitude[rownum],
                         "latitude": latitude[rownum],
-                        "speed": speed[rownum],
-                        "angle": angle[rownum],
+                        "speed": int(speed[rownum]),
+                        "angle": int(angle[rownum]),
                         "datetime": datetime[rownum],
-                        "status": status[rownum],
-                        "extendedStatus": extendedStatus[rownum],
-                        "reversed": reversed[rownum]
+                        "status": int(status[rownum]),
+                        "extendedStatus": int(extendedStatus[rownum]),
+                        "reversed": int(reversed[rownum])
                     }
                 }
             ]
