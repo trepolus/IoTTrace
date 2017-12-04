@@ -38,3 +38,4 @@ ggmap(map) +
 
 hist(data$status, xlab="status", ylab="frequency", main="Taxi status", xlim = c(-0.5,3.5), breaks=c(-0.5,0.5,1.5,2.5,3.5))
 
+write.csv(data, file = "taxi_filtered.csv")
