@@ -1,8 +1,8 @@
 library(ggmap)
 setwd("/home/s/Dokumente/R&D/IoTTrace/data/")
-data <- read.csv("taxi0228.csv")
-dataorig <- data
+data <- read.csv("taxi-big.csv")
 names(data) <- c("id","taxiid","longitude","latitude","speed","angle","datetime","status","extendedstatus","reversed")
+dataorig <- data
 datacount <- nrow(data)
 #number of read observations
 datacount
@@ -12,9 +12,9 @@ boxplot(data$speed)
 summary(data$speed)
 #upper whisker
 upq <- quantile(data$speed, 0.75)
-# limit is 4x the interquartile range
-limit <- upq + 4*(upq-quantile(data$speed, 0.25))
-limit
+# limit is 3x the interquartile range
+limit <- upq + 3*(upq-quantile(data$speed, 0.25))
+# limit <- 100
 data <- subset(data, speed < limit)
 summary(data$speed)
 dropped <- datacount - nrow(data)
@@ -23,9 +23,10 @@ dropped
 
 plot(data$longitude, data$latitude, main="unfiltered Map", xlab="Longitude", ylab="Latitude")
 #filter
-data <- subset(data,longitude>121.2)
-data <- subset(data,latitude<32.0)
-data <- subset(data,latitude>31.0)
+data <- subset(data,longitude>121.38)
+data <- subset(data,longitude<121.57)
+data <- subset(data,latitude<31.32)
+data <- subset(data,latitude>31.17)
 plot(data$longitude, data$latitude, main="filtered Map", xlab="Longitude", ylab="Latitude", pch=".")
 dropped <- datacount - nrow(data)
 #number of dropped observations
