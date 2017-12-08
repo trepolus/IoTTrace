@@ -7,6 +7,18 @@ datacount <- nrow(data)
 #number of read observations
 datacount
 
+
+plot(data$longitude, data$latitude, main="unfiltered Map", xlab="Longitude", ylab="Latitude")
+#filter
+data <- subset(data,longitude>121.38)
+data <- subset(data,longitude<121.57)
+data <- subset(data,latitude<31.32)
+data <- subset(data,latitude>31.17)
+plot(data$longitude, data$latitude, main="filtered Map", xlab="Longitude", ylab="Latitude", pch=".")
+dropped <- datacount - nrow(data)
+#number of dropped observations
+dropped
+
 #speed
 boxplot(data$speed)
 summary(data$speed)
@@ -17,17 +29,6 @@ limit <- upq + 3*(upq-quantile(data$speed, 0.25))
 # limit <- 100
 data <- subset(data, speed < limit)
 summary(data$speed)
-dropped <- datacount - nrow(data)
-#number of dropped observations
-dropped
-
-plot(data$longitude, data$latitude, main="unfiltered Map", xlab="Longitude", ylab="Latitude")
-#filter
-data <- subset(data,longitude>121.38)
-data <- subset(data,longitude<121.57)
-data <- subset(data,latitude<31.32)
-data <- subset(data,latitude>31.17)
-plot(data$longitude, data$latitude, main="filtered Map", xlab="Longitude", ylab="Latitude", pch=".")
 dropped <- datacount - nrow(data)
 #number of dropped observations
 dropped
