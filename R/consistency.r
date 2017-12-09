@@ -1,19 +1,29 @@
 library(ggmap)
 setwd("/home/s/Dokumente/R&D/IoTTrace/data/")
-data <- read.csv("taxi-big.csv")
+data <- read.csv("taxi0228.csv")
 names(data) <- c("id","taxiid","longitude","latitude","speed","angle","datetime","status","extendedstatus","reversed")
 dataorig <- data
 datacount <- nrow(data)
 #number of read observations
 datacount
 
+#density of speed before the coordinate cut-off
+plot(density(data$speed), xlab="Speed", ylab="Density", main="Speed density")
+dataw0 <- subset(data,speed>0)
+dataw0 <- subset(dataw0,speed<150)
+hist(dataw0$speed, xlab="Speed", ylab="Density", main="Adapted speed distribution without zero values")
+plot(density(dataw0$speed), xlab="Speed", ylab="Density", main="")
 
 plot(data$longitude, data$latitude, main="unfiltered Map", xlab="Longitude", ylab="Latitude")
 #filter
-data <- subset(data,longitude>121.38)
-data <- subset(data,longitude<121.57)
-data <- subset(data,latitude<31.32)
-data <- subset(data,latitude>31.17)
+x_start = 121.38
+x_end = 121.57
+y_start = 31.15
+y_end = 31.32
+data <- subset(data,longitude>x_start)
+data <- subset(data,longitude<x_end)
+data <- subset(data,latitude>y_start)
+data <- subset(data,latitude<y_end)
 plot(data$longitude, data$latitude, main="filtered Map", xlab="Longitude", ylab="Latitude", pch=".")
 dropped <- datacount - nrow(data)
 #number of dropped observations
@@ -21,6 +31,7 @@ dropped
 
 #speed
 boxplot(data$speed)
+plot(density(data$speed), xlab="Speed", ylab="Density", main="")
 summary(data$speed)
 #upper whisker
 upq <- quantile(data$speed, 0.75)
@@ -33,11 +44,17 @@ dropped <- datacount - nrow(data)
 #number of dropped observations
 dropped
 
-map <- get_map(location = "Shanghai", zoom = 10)
-ggmap(map)
+map <- get_map(location = "Shanghai", zoom = 12)
 ggmap(map) +
-  geom_point(data = data, aes(x = longitude, y = latitude, fill="black", alpha=0.2), size = 1, shape = 21)
+  geom_point(data = data, aes(x = longitude, y = latitude, fill="black", alpha=0.1), size = 0.3, shape = 21) +
+  geom_segment(aes(x=x_start, y=y_start, xend = x_end, yend = y_start)) +
+  geom_segment(aes(x=x_start, y=y_end, xend = x_end, yend = y_end)) +
+  geom_segment(aes(x=x_start, y=y_start, xend = x_start, yend = y_end)) +
+  geom_segment(aes(x=x_end, y=y_start, xend = x_end, yend = y_end))
 
 hist(data$status, xlab="status", ylab="frequency", main="Taxi status", xlim = c(-0.5,3.5), breaks=c(-0.5,0.5,1.5,2.5,3.5))
+hist(data$extendedstatus, xlab="extended status", ylab="frequency", main="Extended taxi status", xlim = c(-0.5,3.5), breaks=c(-0.5,0.5,1.5,2.5,3.5))
+
+summary(data$angle)
 
 write.csv(data, file = "taxi_filtered.csv")
