@@ -47,15 +47,17 @@ To achieve this goal, we use data collected by taxis in Shanghai in 2007. These 
 There are several different articles, that analyse the same dataset.
 \section{Data consistency}
 The first task is to check and improve the consistency of the provided data. Therefore we will use R and Python. \\
+At the beginning we have to filter all impossible values of the variables we're operating on. For example, our R script removes all entries with a negative speed value or timestamps outside of the interval in which these data have been collected.  Apparently the trace files only contain consistent data sets as our script has not detected and removed a single error. \\
+Furthermore, there are two more types of errors that have to be considered: Checking the geographical consistency and filtering gaps in the traces.
 \subsection{Geographical consistency}
-The first step is to filter the data by the coordinates. In order to focus on the city centre, we only keep those entries in our dataset that have a longitude between 121.38 and 121.57 and a latitude between 31.17 und 31.32. In figure \ref{fig:borders} you can see our chosen borders with around 19.000 randomly chosen points.\\
+The next step is to filter the data by the coordinates. As we decided to focus on the city centre, we only keep those entries in our dataset that have a longitude between 121.38 and 121.57 and a latitude between 31.15 und 31.32. In figure \ref{fig:borders} you can see our chosen borders on a map with around 19.000 randomly chosen points.\\
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.9]{borders.png}
 \caption{\label{fig:borders}Borders of the city center}
 \end{figure}
-Second, we analysed several statistical metrics concerning the speed variable which showed that there is a wide spectrum of different values, with some outliers bigger than 200 km/h, which does not make any sense in a city centre and is probably an error. Thats why we decided to cut off all the entries with a speed higher than three times the interquartile range. As you can see in figure \ref{fig:speed} the speed distribution is skewed right with a single maximum. That justifies our decision, because we don't lose relevant data entries, when we choose our cutoff coordinates. \\
-We also observed that limiting the data to the city center changes the data's geographical distribution, as some streets outside don't have a low speed limit. For example we lost some data entries on the street towards one of the airports by removing all the coordinates with a speed higher than 80 km/h. \\
+Second, we analysed several statistical metrics concerning the speed variable which showed that there is a wide spectrum of different values, with some outliers bigger than 200 km/h, which does not make any sense in a city centre and is probably an error. Thats why we decided to cut off all the entries with a speed higher than three times the interquartile range. As you can see in figure \ref{fig:speed} the speed distribution is skewed right with a single maximum. That justifies our decision, because we don't lose relevant data entries, when we choose our cutoff speed value. \\
+We also observed that limiting the data to the city center changes the speed distribution, as some streets outside don't have a low speed limit. For example we lost some data entries on the street towards one of the airports by removing all the points with a speed higher than 80 km/h. \\
 \begin{wrapfigure}{r}{0.5\textwidth}
 \includegraphics[scale=0.67]{speed.png}
 \caption{\label{fig:speed}Adapted speed distribution without zero values}

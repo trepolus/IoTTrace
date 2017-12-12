@@ -1,11 +1,27 @@
 library(ggmap)
 setwd("/home/s/Dokumente/R&D/IoTTrace/data/")
-data <- read.csv("taxi0228.csv")
+data <- read.csv("taxi-medium.csv")
 names(data) <- c("id","taxiid","longitude","latitude","speed","angle","datetime","status","extendedstatus","reversed")
 dataorig <- data
 datacount <- nrow(data)
 #number of read observations
 datacount
+
+
+#bullshit value filtering
+data <- subset(data, speed >= 0 && speed < 300)
+data <- subset(data, angle >= 0 && angle < 180)
+data <- subset(data, status >= 0 && status <= 3)
+data <- subset(data, taxiid >= 0)
+data <- subset(data, longitude >= -180 && longitude <= 180)
+data <- subset(data, latitude >= -90 && latitude <= 90)
+data$datetime <- as.POSIXct(data$datetime)
+begin <- as.POSIXct('2006-01-01')
+end <- as.POSIXct('2007-12-31')
+data <- subset(data, datetime >= begin && datetime <= end)
+dropped <- datacount - nrow(data)
+dropped
+
 
 #density of speed before the coordinate cut-off
 plot(density(data$speed), xlab="Speed", ylab="Density", main="Speed density")
@@ -20,10 +36,8 @@ x_start = 121.38
 x_end = 121.57
 y_start = 31.15
 y_end = 31.32
-data <- subset(data,longitude>x_start)
-data <- subset(data,longitude<x_end)
-data <- subset(data,latitude>y_start)
-data <- subset(data,latitude<y_end)
+data <- subset(data,longitude>x_start && longitude<x_end)
+data <- subset(data,latitude>y_start && latitude<y_end)
 plot(data$longitude, data$latitude, main="filtered Map", xlab="Longitude", ylab="Latitude", pch=".")
 dropped <- datacount - nrow(data)
 #number of dropped observations
