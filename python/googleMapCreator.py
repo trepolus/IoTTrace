@@ -40,7 +40,7 @@ def sort(taxiList):
 
 
 """This is the filePath you have to specify"""
-filePath = 'C:/Users/Lucas/Desktop/INSA/IoT/IoTTrace/data/taxi0228.csv'
+filePath = '../data/taxi0228.csv'
 
 '''This is the List containing all taxi data we work with'''
 masterList = list()
@@ -137,10 +137,11 @@ def createMultipleMapsSortedByTaxiID(folderPath):
          #print(latitudeList[k], longitudeList[k])
          #k = k + 1
 
-def createOneMapWithAllTrips(folderPath):
+def createOneMapWithAllTrips(folderPath, showPassengers):
 
     latitudeList = list()
     longitudeList = list()
+    plotcolor = "#FF0000"
 
     '''define TimeRange in seconds'''
     timeRange = 600
@@ -149,9 +150,9 @@ def createOneMapWithAllTrips(folderPath):
     gmap = gmplot.GoogleMapPlotter(31.138049, 121.479736, 12, apikey=googleApiKey)
     k = 0
 
-    for k in range(0, 10000):
+    for k in range(0, len(masterList)-1):
         # use following line if you want to iterate over the whole list
-        # for row in masterList:
+        #for row in masterList:
         latitude = float(masterList[k][3])
         longitude = float(masterList[k][2])
 
@@ -170,10 +171,19 @@ def createOneMapWithAllTrips(folderPath):
             if (currentTaxiID != nextTaxiID) or (timedif >= timeRange or timedif <= -timeRange):
 
                 '''use randomColor if you want to have a colorful output'''
-                r = lambda: random.randint(0, 255)
-                randomColor = '#%02X%02X%02X' % (r(), r(), r())
+                if (showPassengers):
+                    plotcolor = "#0000FF"
+
+                    # if no passenger, make line red!
+                    if masterList[k][7] == 0:
+                        plotcolor = "#FF0000"
+                else:
+                    r = lambda: random.randint(0, 255)
+                    randomColor = '#%02X%02X%02X' % (r(), r(), r())
+                    plotcolor = randomColor
+
                 '''draw lines'''
-                gmap.plot(latitudeList, longitudeList, randomColor, edge_width=5)
+                gmap.plot(latitudeList, longitudeList, plotcolor, edge_width=5)
                 '''draw points'''
                 gmap.scatter(latitudeList, longitudeList, '#FF0000', size=50, marker=False)
                 '''draw heatmap'''
@@ -253,20 +263,23 @@ if os.path.exists(outPutFilepath):
     shutil.rmtree("maps")
 os.makedirs(outPutFilepath)
 
-'''creates multiple maps into outputPath'''
+"""
+#creates multiple maps into outputPath
 createMultipleMapsSortedByTaxiID(outPutFilepath)
 print("Success, Maps created!")
+"""
 
 '''create a Map of all the trips'''
 outPutFilepath = "ShanghaiMegaMap"
-createOneMapWithAllTrips(outPutFilepath)
+'''include false/true if you want to show a difference between cabs with passengers or without'''
+createOneMapWithAllTrips(outPutFilepath, True)
 print("Success, MegaMap created!")
 
-'''create a Map of all the trips'''
+'''create a Map of all the trips
 outPutFilepath = "ShanghaiSpeedsZeroMap"
 createOneMapWithSpeedsZero(outPutFilepath)
 print("Success, SpeedsZeroMap created!")
-
+'''
 
 '''some examples how to plot a map'''
 # gmap.plot(latitudeList, longitudeList, 'cornflowerblue', edge_width=2)
