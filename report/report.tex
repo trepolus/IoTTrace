@@ -56,14 +56,21 @@ The next step is to filter the data by the coordinates. As we decided to focus o
 \includegraphics[scale=0.9]{borders.png}
 \caption{\label{fig:borders}Borders of the city center}
 \end{figure}
-Second, we analysed several statistical metrics concerning the speed variable which showed that there is a wide spectrum of different values, with some outliers bigger than 200 km/h, which does not make any sense in a city centre and is probably an error. Thats why we decided to cut off all the entries with a speed higher than three times the interquartile range. As you can see in figure \ref{fig:speed} the speed distribution is skewed right with a single maximum. That justifies our decision, because we don't lose relevant data entries, when we choose our cutoff speed value. \\
+Second, we analysed several statistical metrics concerning the speed variable which showed that there is a wide spectrum of different values, with some outliers bigger than 200 km/h, which does not make any sense in a city centre and is probably an error. That's why we decided to cut off all the entries with a speed higher than three times the interquartile range. As you can see in figure \ref{fig:speed} the speed distribution is skewed right with a single maximum. That justifies our decision, because we don't lose relevant data entries, when we choose our cut-off speed value. \\
 We also observed that limiting the data to the city center changes the speed distribution, as some streets outside don't have a low speed limit. For example we lost some data entries on the street towards one of the airports by removing all the points with a speed higher than 80 km/h. \\
 \begin{wrapfigure}{r}{0.5\textwidth}
 \includegraphics[scale=0.67]{speed.png}
 \caption{\label{fig:speed}Adapted speed distribution without zero values}
 \end{wrapfigure}
 \subsection{Gap filtering}
-After this procedure we are already able to plot a schematic map of Shanghai, although a dataset still contains a lot of data to be removed. We make use of Python to find those taxi traces with a time gap between two data entries. This gap could either be a result of a data transmission error or an indicator for the beginning of a new taxi trip.
+After this procedure we are already able to plot a schematic map of Shanghai, although a dataset still contains a lot of data to be removed. We make use of Python to find those taxi traces with a time gap between two data entries. This gap could either be a result of a data transmission error or an indicator for the beginning of a new taxi trip.\\
+To define these trips in the Python code we had to choose a time gap that was appropriate for this data. So to define a trip we said that if a time gap between two data was >= 600 seconds or <= -600 seconds that it would be separated and be a new trip.\\
+The reason we chose this time range was so that for future analyses of these trips we felt that this time range would keep our results consistent and more accurate. Each of these trips would be given random colours to discern one from another if we decided to plot all of these trips like in the example given. As you can see there are many trips that have been plotted and to the eye these trips seem to be valid as well.
+\\
+\begin{wrapfigure}{r}{0.5\textwidth}
+\includegraphics[scale=0.67]{plotalltrips.png}
+\caption{\label{fig:plotalltrips}All of the trips created are plotted}
+\end{wrapfigure}
 \section{Analysis}
 \section{Results}
 \section{Summary}
