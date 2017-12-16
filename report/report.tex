@@ -39,12 +39,11 @@ S.Sedlmeir@campus.lmu.de}}
 
 \section{Introduction}
 \label{sec:Introduction}
-\begin{comment} All over the world big cities are struggling to fight against air pollution as a result of individual transport. This does not just concern developing countries or emerging countries, but also developed first world countries: Beijing will ban certain cars to prevent an overriding of the emission limits \cite{beij}, whereas the city of Oxford is planning to establish a petrol car free zone \cite{oxfo}. \\
-While bans forbid people to use their cars, a more sustainable way would be to make people use the local transport voluntarily by improving it where necessary. Thus we need a reliable possibility to learn about people's possible needs. As a lot of people choose a taxi where there is a unsatisfying offer of transport, we could use taxi meta data in order to analyse automatically possible useful routes for new bus lines for example. \\
-To achieve this goal, we use data collected by taxis in Shanghai in 2007. These data contain GPS positions, a timestamp, the status, the direction in which the taxi is moving as well as a Taxi ID.
-\end{comment}
+
 \section{Related work}
-There are several different articles, that analyse the same dataset.
+There are several different articles, that analyse the same or smiliar datasets. \\
+The first one, "A Metropolitan Taxi Mobility Model from Real GPS Traces", published in 2012, analysed the Taxi GPS traces from Shanghai in order to develop a model that helps understanding the needs of vehicular ad hoc networks for example. Therefore the authors computed several metrics, e.g. the turn probability at all the road crossing, implemented a map-matching algorithm and considered macro- and microscopic travel patterns. Their so called "META" model shows a higher accuracy than all other models at this time. \cite{meta} \\
+Another article, "SCRAM: A Sharing Considered Route Assignment Mechanism for Fair Taxi Route Recommendations", about the same data set aimed to find an algorithm, that allows fair route sharing for every competing taxi driver. One of its goals is to not lose efficiency and a driving cost per customer as low as possible, so that it offers adavantages for the driver and the customer equally. This requires a complex evaluation algorithm that considers several prinicples which are respected my the assignment mechanism. \cite{scram}
 \section{Data consistency}
 The first task is to check and improve the consistency of the provided data, so that we are able to compute our chosen metric accurately. \\
 At the beginning we have to filter all impossible values of the variables we're operating on. For example, our R script removes all entries with a negative speed value or timestamps outside of the interval in which these data have been collected.  Apparently the trace files only contain consistent data sets as our script has not detected and removed a single error. \\
