@@ -44,7 +44,7 @@ def sort(taxiList):
 
 
 """This is the filePath you have to specify"""
-filePath = '../data/taxi0228.csv'
+filePath = '../data/taxi-medium-big.csv'
 
 '''This is the List containing all taxi data we work with'''
 masterList = list()
@@ -108,7 +108,8 @@ def createDistanceCSV ():
     firstLine.append("trip")
     firstLine.append("distance")
     firstLine.append("points")
-
+    firstLine.append("timeToNextTrip")
+    firstLine.append("status")
 
     distanceList.append(firstLine)
 
@@ -157,6 +158,12 @@ def createDistanceCSV ():
                 dataList.append(str(int(distance)) + "m")
                 dataList.append(counter)
 
+                if(currentTaxiID == nextTaxiID):
+                    dataList.append(timedif)
+                else:
+                    dataList.append(0)
+                dataList.append((masterList[k][7])) #status
+
                 distanceList.append(dataList)
 
                 pointList = list()
@@ -167,5 +174,6 @@ def createDistanceCSV ():
 
         k = k + 1
     createCSV(distanceList, "distances")
+
 #createCSV(masterList, "taxiIDSorted2")
 createDistanceCSV()
