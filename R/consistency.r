@@ -1,5 +1,5 @@
 setwd("/home/s/Dokumente/R&D/IoTTrace/data/")
-data <- read.csv("taxi-big.csv")
+data <- read.csv("taxi0228.csv")
 names(data) <- c("id","taxiid","longitude","latitude","speed","angle","datetime","status","extendedstatus","reversed")
 dataorig <- data
 datacount <- nrow(data)
