@@ -57,28 +57,43 @@ At the beginning we have to filter all impossible values of the variables we're 
 Furthermore, there are two more types of errors that have to be considered: Checking the geographical consistency and filtering gaps in the traces.
 \subsection{Geographical consistency}
 
-In the next step we analysed several statistical metrics concerning the speed variable which showed that there is a wide spectrum of different values, with some outliers bigger than 200 km/h, which does not make any sense in a city centre and is probably an error. That's why we decided to cut off all the entries with a speed higher than three times the interquartile range. As you can see in figure \ref{fig:speed} the speed distribution is skewed right with a single maximum. That justifies our decision, because we don't lose relevant data entries, when we choose our cut-off speed value. On the other hand side, just performing a coordinate cut is not sufficient: it changes the speed distribution slightly, e.g. we lost some data entries on the street towards one of the airports by removing all the points with a speed higher than 80 km/h. However, it does not remove all error entries. \\
+In the next step we analysed several statistical metrics concerning the speed variable which showed that there is a wide spectrum of different values, with some outliers bigger than 200 km/h, which does not make any sense in a city centre and is probably an error. That's why we decided to cut off all the entries with a speed higher than three times the interquartile range. As you can see in figure \ref{fig:speed_before} the speed distribution is skewed right with a single maximum. That justifies our decision, because we don't lose relevant data entries, when we choose our cut-off speed value. On the other hand side, just performing a coordinate cut is not sufficient: it changes the speed distribution slightly, e.g. we lost some data entries on the street towards one of the airports by removing all the points with a speed higher than 80 km/h. However, it does not remove all error entries. \\
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.65]{speed.png}
-\caption{\label{fig:speed}Adapted speed distribution without zero values}
+\includegraphics[scale=0.6]{density_before.png}
+\caption{\label{fig:speed_before}Adapted speed distribution without zero values, but before coordinate filtering}
 \end{figure}
 
-The data has still to be filtered by the coordinates. As we decided to focus on the city centre, we only keep those entries in our dataset that have a longitude between 121.38 and 121.57 and a latitude between 31.15 and 31.32. In figure \ref{fig:borders} you can see our chosen borders on a map with a random sample of 100.000 points.  After restricting the data to this area, we observed a change in the distribution of the speed values as well: In general, the mean slightly decreases whilst the median is increasing strongly. As we have a right skewed distribution, we eliminate higher values with this procedure, which is the result of the fact that some streets outside don't have a low speed limit and make it necessary to perform this cut-off. \\
+The data has still to be filtered by the coordinates. As we decided to focus on the city centre, we only keep those entries in our dataset that have a longitude between 121.38 and 121.57 and a latitude between 31.15 and 31.32. In figure \ref{fig:borders} you can see our chosen borders on a map with a random sample of 100.000 points. \\
+
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.9]{borders.png}
 \caption{\label{fig:borders}Borders of the city center}
 \end{figure}
 
+After restricting the data to this area, we observed a change in the distribution of the speed values as well: In general, the mean slightly decreases, in this case from 35.57 km/h to 33.46 km/h, whilst the median is increasing more significantly, as the amount of datasets with a speed higher than the median that we remove (in this case) comes up to more than 30 percent of all datasets. As we have a right skewed distribution, we eliminate higher values with this procedure, which is the result of the fact that some streets outside of the city center don't have a low speed limit and make it necessary to perform this cut-off: for example it decreases the amount of datasets with a speed higher than 80km/h by more than one half, see figure \ref{fig:speed_after}. \\
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.6]{density_after.png}
+\caption{\label{fig:speed_after}Adapted speed distribution without zero values, after coordinate filtering}
+\end{figure}
+
 \subsection{Gap filtering}
 After this procedure we are already able to plot a schematic map of Shanghai, although our dataset still contains data to be filtered. We search for those taxi traces with a time gap between two data entries. This gap could either be a result of a data transmission error or an indicator for the beginning of a new taxi trip.\\
-To define these trips we had to choose a time gap that was appropriate for this data. So to define a trip we said that if the absolute value of a time gap between two data was bigger than 600 seconds that it would be separated and be a new trip.\\
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.35]{plotalltrips.png}
 \caption{\label{fig:plotalltrips}All calculated trips}
+\end{figure}
+To define these trips we had to choose a time gap that was appropriate for this data. So to define a trip we said that if the absolute value of a time gap between two data was bigger than 600 seconds that it would be separated and be a new trip.\\
+As you can see in figure \ref{fig:timegap}, the mean value is around 25 minutes per gap in this case, while most of the gaps are shorter than 20 minutes. \\
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.75]{timegap.png}
+\caption{\label{fig:timegap}The time-gap distribution}
 \end{figure}
 The reason we chose this time range was so that for future analyses of these trips we felt that this time range would keep our results consistent and more accurate. Each of these trips would be given random colours to discern one from another if we decided to plot all of these trips like in the example given. As you can see there are many trips that have been plotted and to the eye these trips seem to be valid as well. \\
 \section{Our Metric}
