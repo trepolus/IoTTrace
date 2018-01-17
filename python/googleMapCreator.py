@@ -183,11 +183,11 @@ def createOneMapWithAllTrips(folderPath, showPassengers):
                     plotcolor = randomColor
 
                 '''draw lines'''
-                gmap.plot(latitudeList, longitudeList, plotcolor, edge_width=5)
+                gmap.plot(latitudeList, longitudeList, plotcolor, edge_width=1)
                 '''draw points'''
-                gmap.scatter(latitudeList, longitudeList, '#FF0000', size=50, marker=False)
+                #gmap.scatter(latitudeList, longitudeList, '#FF0000', size=50, marker=False)
                 '''draw heatmap'''
-                #gmap.heatmap(latitudeList, longitudeList)
+                gmap.heatmap(latitudeList, longitudeList)
 
                 latitudeList = list()
                 longitudeList = list()
@@ -196,6 +196,67 @@ def createOneMapWithAllTrips(folderPath, showPassengers):
         '''use this if you want to print latitudes or if you do not use for(range), it is important to increase k '''
         # print(latitudeList[k], longitudeList[k])
         # k = k + 1
+    url = str(folderPath) + ".html"
+    gmap.draw(url)
+
+def createTripHeatmap(folderPath, passengersInTaxi):
+
+    latitudeList = list()
+    longitudeList = list()
+    plotcolor = "#FF0000"
+
+    '''define TimeRange in seconds'''
+    timeRange = 600
+
+    googleApiKey = "AIzaSyBFwc7dZAAcAR4AkVl6RrDam68JUWYoQKQ"
+    gmap = gmplot.GoogleMapPlotter(31.138049, 121.479736, 12, apikey=googleApiKey)
+    k = 0
+
+    for k in range(0, 5000):
+        latitude = float(masterList[k][3])
+        longitude = float(masterList[k][2])
+        passengers = int(masterList[k][7])
+
+        if passengersInTaxi:
+            if passengers > 0:
+                latitudeList.append(latitude)
+                longitudeList.append(longitude)
+        else:
+            if passengers == 0:
+                latitudeList.append(latitude)
+                longitudeList.append(longitude)
+
+        if k + 1 < len(masterList):
+
+            currentTaxiID = masterList[k][1]
+            nextTaxiID = masterList[k + 1][1]
+
+            time1 = timeChanger(masterList[k][6])
+            time2 = timeChanger(masterList[k + 1][6])
+            timedif = time2 - time1
+
+            if (currentTaxiID != nextTaxiID) or (timedif >= timeRange or timedif <= -timeRange):
+
+                if (passengersInTaxi):
+                    plotcolor = "#0000FF"
+                else:
+                    plotcolor = "#FF0000"
+
+                if len(latitudeList) != 0 and len(longitudeList) != 0:
+                    '''draw lines'''
+                    gmap.plot(latitudeList, longitudeList, plotcolor, edge_width=1)
+                    '''draw points'''
+                    #gmap.scatter(latitudeList, longitudeList, '#FF0000', size=50, marker=False)
+                    '''draw heatmap'''
+                    gmap.heatmap(latitudeList, longitudeList)
+
+                latitudeList = list()
+                longitudeList = list()
+
+
+        '''use this if you want to print latitudes or if you do not use for(range), it is important to increase k '''
+        # print(latitudeList[k], longitudeList[k])
+        k = k + 1
     url = str(folderPath) + ".html"
     gmap.draw(url)
 
@@ -270,16 +331,22 @@ print("Success, Maps created!")
 """
 
 '''create a Map of all the trips'''
-outPutFilepath = "ShanghaiMegaMap"
+#outPutFilepath = "ShanghaiMegaMap_medium_small"
 '''include false/true if you want to show a difference between cabs with passengers or without'''
-createOneMapWithAllTrips(outPutFilepath, True)
-print("Success, MegaMap created!")
+#createOneMapWithAllTrips(outPutFilepath, True)
+#print("Success, MegaMap created!")
 
 '''create a Map of all the trips
 outPutFilepath = "ShanghaiSpeedsZeroMap"
 createOneMapWithSpeedsZero(outPutFilepath)
 print("Success, SpeedsZeroMap created!")
 '''
+
+'''create a HeatMap of al trips with or without passengers'''
+outPutFilepath = "ShanghaiHeatMap"
+createTripHeatmap(outPutFilepath, True)
+print("Success, HeatMap created!")
+
 
 '''some examples how to plot a map'''
 # gmap.plot(latitudeList, longitudeList, 'cornflowerblue', edge_width=2)
