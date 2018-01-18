@@ -40,7 +40,7 @@ def sort(taxiList):
 
 
 """This is the filePath you have to specify"""
-filePath = '../data/taxi0228.csv'
+filePath = '../data/taxi-medium-big.csv'
 
 '''This is the List containing all taxi data we work with'''
 masterList = list()
@@ -210,9 +210,12 @@ def createTripHeatmap(folderPath, passengersInTaxi):
 
     googleApiKey = "AIzaSyBFwc7dZAAcAR4AkVl6RrDam68JUWYoQKQ"
     gmap = gmplot.GoogleMapPlotter(31.138049, 121.479736, 12, apikey=googleApiKey)
-    k = 0
 
-    for k in range(0, 5000):
+    #decide which limit is appropriate
+    limit = len(masterList)-1
+    limit = 2000
+
+    for k in range(0, limit):
         latitude = float(masterList[k][3])
         longitude = float(masterList[k][2])
         passengers = int(masterList[k][7])
@@ -244,7 +247,7 @@ def createTripHeatmap(folderPath, passengersInTaxi):
 
                 if len(latitudeList) != 0 and len(longitudeList) != 0:
                     '''draw lines'''
-                    gmap.plot(latitudeList, longitudeList, plotcolor, edge_width=1)
+                    #gmap.plot(latitudeList, longitudeList, plotcolor, edge_width=1)
                     '''draw points'''
                     #gmap.scatter(latitudeList, longitudeList, '#FF0000', size=50, marker=False)
                     '''draw heatmap'''
@@ -256,7 +259,6 @@ def createTripHeatmap(folderPath, passengersInTaxi):
 
         '''use this if you want to print latitudes or if you do not use for(range), it is important to increase k '''
         # print(latitudeList[k], longitudeList[k])
-        k = k + 1
     url = str(folderPath) + ".html"
     gmap.draw(url)
 
