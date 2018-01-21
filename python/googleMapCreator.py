@@ -80,7 +80,6 @@ def printMasterlist():
             print("Row", i, ":", output)
         i = i + 1
 
-
 def createMultipleMapsSortedByTaxiID(folderPath):
 
     latitudeList = list()
