@@ -255,7 +255,6 @@ def createTripHeatmap(folderPath, passengersInTaxi, initalMapZoom):
                     # gmap parameters: latitude, longitude, treshold, radius, gradient, opacity, dissipating
                     gmap.heatmap(latitudeList, longitudeList, 1000, 10, None, 0.6, True)
 
-
                 latitudeList = list()
                 longitudeList = list()
 
