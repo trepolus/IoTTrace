@@ -251,7 +251,9 @@ def createTripHeatmap(folderPath, passengersInTaxi):
                     '''draw points'''
                     #gmap.scatter(latitudeList, longitudeList, '#FF0000', size=50, marker=False)
                     '''draw heatmap'''
-                    gmap.heatmap(latitudeList, longitudeList)
+                    # gmap parameters: latitude, longitude, treshold, radius, gradient, opacity, dissipating
+                    gmap.heatmap(latitudeList, longitudeList, 10, 15, None, 0.6, False)
+
 
                 latitudeList = list()
                 longitudeList = list()
