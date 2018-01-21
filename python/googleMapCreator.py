@@ -199,17 +199,18 @@ def createOneMapWithAllTrips(folderPath, showPassengers):
     url = str(folderPath) + ".html"
     gmap.draw(url)
 
-def createTripHeatmap(folderPath, passengersInTaxi):
+def createTripHeatmap(folderPath, passengersInTaxi, initalMapZoom):
 
     latitudeList = list()
     longitudeList = list()
     plotcolor = "#FF0000"
 
+
     '''define TimeRange in seconds'''
     timeRange = 600
 
     googleApiKey = "AIzaSyBFwc7dZAAcAR4AkVl6RrDam68JUWYoQKQ"
-    gmap = gmplot.GoogleMapPlotter(31.138049, 121.479736, 12, apikey=googleApiKey)
+    gmap = gmplot.GoogleMapPlotter(31.230347, 121.473873, initalMapZoom, apikey=googleApiKey)
 
     #decide which limit is appropriate
     limit = len(masterList)-1
@@ -252,8 +253,7 @@ def createTripHeatmap(folderPath, passengersInTaxi):
                     #gmap.scatter(latitudeList, longitudeList, '#FF0000', size=50, marker=False)
                     '''draw heatmap'''
                     # gmap parameters: latitude, longitude, treshold, radius, gradient, opacity, dissipating
-                    gmap.heatmap(latitudeList, longitudeList, 10, 15, None, 0.6, False)
-
+                    gmap.heatmap(latitudeList, longitudeList, 1000, 10, None, 0.6, True)
 
                 latitudeList = list()
                 longitudeList = list()
@@ -348,7 +348,7 @@ print("Success, SpeedsZeroMap created!")
 
 '''create a HeatMap of al trips with or without passengers'''
 outPutFilepath = "ShanghaiHeatMap"
-createTripHeatmap(outPutFilepath, True)
+createTripHeatmap(outPutFilepath, True, 12)
 print("Success, HeatMap created!")
 
 
