@@ -16,6 +16,11 @@ def timeChanger(timeToChange):
     seconds = time.mktime(timeFormat.timetuple())
     return seconds
 
+
+def timeChangerDayTime(timeToChange):
+    timeOfDay = datetime.strptime(timeToChange, "%Y-%m-%d %H:%M:%S").time()
+    timeOfDay = timeOfDay.hour
+    return timeOfDay
 '''
 This sorts the csv File after taxiID's
 '''
@@ -199,12 +204,11 @@ def createOneMapWithAllTrips(folderPath, showPassengers):
     url = str(folderPath) + ".html"
     gmap.draw(url)
 
-def createTripHeatmap(folderPath, passengersInTaxi, initalMapZoom):
+def createTripHeatmap(folderPath, passengersInTaxi, initalMapZoom, startTime, endTime):
 
     latitudeList = list()
     longitudeList = list()
     plotcolor = "#FF0000"
-
 
     '''define TimeRange in seconds'''
     timeRange = 600
@@ -213,29 +217,33 @@ def createTripHeatmap(folderPath, passengersInTaxi, initalMapZoom):
     gmap = gmplot.GoogleMapPlotter(31.230347, 121.473873, initalMapZoom, apikey=googleApiKey)
 
     #decide which limit is appropriate
-    limit = len(masterList)-1
-    limit = 2000
+    #limit = len(masterList)-1
+    start = 0
+    limit = 20000
 
-    for k in range(0, limit):
+    for k in range(start, limit):
         latitude = float(masterList[k][3])
         longitude = float(masterList[k][2])
         passengers = int(masterList[k][7])
+        time1 = timeChanger(masterList[k][6])
+        timeOfDay = timeChangerDayTime(masterList[k][6])
 
-        if passengersInTaxi:
-            if passengers > 0:
-                latitudeList.append(latitude)
-                longitudeList.append(longitude)
-        else:
-            if passengers == 0:
-                latitudeList.append(latitude)
-                longitudeList.append(longitude)
+        if (timeOfDay >= startTime and timeOfDay < endTime):
+            if passengersInTaxi:
+                if passengers > 0:
+                    latitudeList.append(latitude)
+                    longitudeList.append(longitude)
+            else:
+                if passengers == 0:
+                    latitudeList.append(latitude)
+                    longitudeList.append(longitude)
 
         if k + 1 < len(masterList):
 
             currentTaxiID = masterList[k][1]
             nextTaxiID = masterList[k + 1][1]
 
-            time1 = timeChanger(masterList[k][6])
+            #time1 = timeChanger(masterList[k][6]) # gets already set at the beginning
             time2 = timeChanger(masterList[k + 1][6])
             timedif = time2 - time1
 
@@ -253,7 +261,7 @@ def createTripHeatmap(folderPath, passengersInTaxi, initalMapZoom):
                     #gmap.scatter(latitudeList, longitudeList, '#FF0000', size=50, marker=False)
                     '''draw heatmap'''
                     # gmap parameters: latitude, longitude, treshold, radius, gradient, opacity, dissipating
-                    gmap.heatmap(latitudeList, longitudeList, 1000, 10, None, 0.6, True)
+                    gmap.heatmap(latitudeList, longitudeList, 10, 10, None, 0.6, True)
 
                 latitudeList = list()
                 longitudeList = list()
@@ -261,7 +269,7 @@ def createTripHeatmap(folderPath, passengersInTaxi, initalMapZoom):
 
         '''use this if you want to print latitudes or if you do not use for(range), it is important to increase k '''
         # print(latitudeList[k], longitudeList[k])
-    url = str(folderPath) + ".html"
+    url = "heatmaps/" + str(folderPath) + ".html"
     gmap.draw(url)
 
 def createOneMapWithSpeedsZero(folderPath):
@@ -335,6 +343,7 @@ print("Success, Maps created!")
 """
 
 '''create a Map of all the trips'''
+#outPutFilepath = "maps"
 #outPutFilepath = "ShanghaiMegaMap_medium_small"
 '''include false/true if you want to show a difference between cabs with passengers or without'''
 #createOneMapWithAllTrips(outPutFilepath, True)
@@ -348,9 +357,22 @@ print("Success, SpeedsZeroMap created!")
 
 '''create a HeatMap of al trips with or without passengers'''
 outPutFilepath = "ShanghaiHeatMap"
-createTripHeatmap(outPutFilepath, True, 12)
-print("Success, HeatMap created!")
 
+'''parameters: filename, passengers(True/False), zoomsize of Map'''
+#True puts out a map with passengers, False without
+#createTripHeatmap(outPutFilepath, True, 12, 1, 2)
+#print("Success, HeatMap created!")
+
+'''this section creats heatmapsNoPassengers based on '''
+starttime = 0
+endtime = 3
+
+while starttime < 24:
+    outPutFilepath = "ShanghaiHeatMap_hour" + str(starttime) + "to" + str(endtime)
+    createTripHeatmap(outPutFilepath, False, 12, starttime, endtime)
+    starttime = starttime + 3
+    endtime = endtime + 3
+print("Heatmaps created")
 
 '''some examples how to plot a map'''
 # gmap.plot(latitudeList, longitudeList, 'cornflowerblue', edge_width=2)
