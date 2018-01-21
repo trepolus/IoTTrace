@@ -1,0 +1,10 @@
+TESTPLAN
+
+1. heatmap as a whole
+
+- radius depends on zoom size, the smaller the displayed area, the bigger the radius
+- other gmap parameters should be rather fixed, as they don't improve visibility etc.
+- time should be varied on certain intervals like 2 or 3 hours, see Lucas' python script, but independant from the day
+- zoom size should be varied as well
+
+2. heatmap as a composite of heatmaps of smaller regions
