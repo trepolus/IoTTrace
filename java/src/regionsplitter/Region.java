@@ -1,5 +1,6 @@
 package regionsplitter;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -17,6 +18,10 @@ public class Region {
 		this.endLon = endLon;
 		this.startLat = startLat;
 		this.startLon = startLon;
+		File dir = new File("regions");
+		if(!dir.exists()) {
+			dir.mkdir();
+		}
 		path = "regions/region" + id + ".txt";
 		try {
 			writer = new BufferedWriter(new FileWriter(path));

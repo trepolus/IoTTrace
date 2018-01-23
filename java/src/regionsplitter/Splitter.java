@@ -1,20 +1,38 @@
 package regionsplitter;
 
+import java.io.FileNotFoundException;
+
 public class Splitter {
 	
 	private double endLon, endLat, startLon, startLat, stepLon, stepLat, rangeLon, rangeLat;
-	private int regionsLon, regionsLat;
+	private int regionsLon, regionsLat, noMatchCount;
 	private Region[][] regions;
 	private Reader reader;
 	private String path;
 
 	public Splitter() {
 		init();
+		initCoords();
+		setup();
+	}
+	
+	public Splitter(String inputPath, String regionsLat, String regionsLon) {
+		path = inputPath;
+		noMatchCount = 0;
+		try {
+			this.regionsLat = Integer.parseInt(regionsLat);
+			this.regionsLon = Integer.parseInt(regionsLon);
+		}
+		catch(NumberFormatException nfe) {
+			nfe.printStackTrace();
+		}
+		initCoords();
 		setup();
 	}
 	
 	public Splitter(String inputPath, String regionsLat, String regionsLon, String endLat, String endLon, String startLat, String startLon) {
 		path = inputPath;
+		noMatchCount = 0;
 		try {
 			this.regionsLat = Integer.parseInt(regionsLat);
 			this.regionsLon = Integer.parseInt(regionsLon);
@@ -30,7 +48,16 @@ public class Splitter {
 	}
 	
 	public void setup() {
-		reader = new Reader(path);
+		if(endLon < startLon || endLat < startLat) {
+			System.out.println("WARNING: maximum values must be bigger than minimum values!");
+		}
+		try {
+			reader = new Reader(path);
+		}
+		catch(FileNotFoundException fne) {
+			System.out.println("FATAL: input file not found. Terminating.");
+			System.exit(0);
+		}
 		rangeLon = endLon - startLon;
 		rangeLat = endLat - startLat;
 		stepLon = rangeLon / regionsLon;
@@ -49,35 +76,41 @@ public class Splitter {
 		String line = null;
 		boolean matched = false;
 		int lineCount = 0;
+		System.out.println("Processing begins.");
 		while((line = reader.read()) != null) {
+			matched = false;
 			lineCount++;
 			double lat = getLat(line);
 			double lon = getLon(line);
-			System.out.println("checking coords " + lon + " " + lat);
+			// System.out.println("checking coords " + lon + " " + lat);
 			double x = (lon - startLon) / stepLon;
 			double y = (lat - startLat) / stepLat;
-			int xreg, yreg;
-			if((xreg = (int) x) <= regionsLon && (yreg = (int) y) <= regionsLat) {
-				if(x == regionsLon) xreg = ((int) x) - 1;
-				if(y == regionsLat) yreg = ((int) y) - 1;
+			int xreg = (int) x;
+			int yreg = (int) y;
+			// System.out.println(x + " " + y);
+			if(x == regionsLon) xreg--;
+			if(y == regionsLat) yreg--;
+			if(xreg < regionsLon && xreg >= 0 && yreg < regionsLat && yreg >= 0) {
 				regions[xreg][yreg].add(line);
-				System.out.println("added to region " + regions[xreg][yreg].getID());
+				// System.out.println("added to region " + regions[xreg][yreg].getID());
 				matched = true;
 			}
 			if(matched == false) {
-				System.out.println("no match");
+				// System.out.println("no match");
+				noMatchCount++;
 			}
 		}
+		System.out.println("Processing terminated.");
+		System.out.println("splitted " + lineCount + " datasets.");
 		closeAll();
-		System.out.println("splitted " + lineCount + " datasets");
 	}
 	
 	private double getLat(String line) {
-		return Double.parseDouble(getItems(line)[4]);
+		return Double.parseDouble(getItems(line)[3]);
 	}
 	
 	private double getLon(String line) {
-		return Double.parseDouble(getItems(line)[3]);
+		return Double.parseDouble(getItems(line)[2]);
 	}
 	
 	private String[] getItems(String line) {
@@ -86,12 +119,15 @@ public class Splitter {
 	
 	private void init() {
 		path = "taxi.csv";
+		regionsLon = 4;
+		regionsLat = 4;
+	}
+	
+	private void initCoords() {
 		startLon = 121.38;
 		endLon = 121.57;
 		startLat = 31.15;
 		endLat = 31.32;
-		regionsLon = 4;
-		regionsLat = 4;
 	}
 	
 	private void closeAll() {
@@ -103,5 +139,6 @@ public class Splitter {
 				count++;
 			}
 		}
+		System.out.println(noMatchCount + " datasets couldn't be added to a region.");
 	}
 }
