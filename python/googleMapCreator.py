@@ -366,6 +366,10 @@ outPutFilepath = "ShanghaiHeatMap"
 starttime = 0
 endtime = 3
 
+if os.path.exists("heatmaps"):
+    shutil.rmtree("heatmaps")
+os.makedirs("heatmaps")
+
 while starttime < 24:
     outPutFilepath = "ShanghaiHeatMap_hour" + str(starttime) + "to" + str(endtime)
     createTripHeatmap(outPutFilepath, False, 12, starttime, endtime)
