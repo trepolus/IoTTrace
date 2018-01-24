@@ -203,7 +203,9 @@ def createOneMapWithAllTrips(folderPath, showPassengers):
     url = str(folderPath) + ".html"
     gmap.draw(url)
 
-def createTripHeatmap(folderPath, passengersInTaxi, initalMapZoom, startTime, endTime):
+'''allTrips: wether a passengersInTaxi should be considered or not, plots ALL trips'''
+'''passengersInTaxi: wether all the datasets with or without passengers should be plotted'''
+def createTripHeatmap(folderPath, allTrips, passengersInTaxi, initalMapZoom, startTime, endTime):
 
     latitudeList = list()
     longitudeList = list()
@@ -228,14 +230,18 @@ def createTripHeatmap(folderPath, passengersInTaxi, initalMapZoom, startTime, en
         timeOfDay = timeChangerDayTime(masterList[k][6])
 
         if (timeOfDay >= startTime and timeOfDay < endTime):
-            if passengersInTaxi:
-                if passengers > 0:
-                    latitudeList.append(latitude)
-                    longitudeList.append(longitude)
+            if allTrips:
+        		    latitudeList.append(latitude)
+        		    longitudeList.append(longitude)
             else:
-                if passengers == 0:
-                    latitudeList.append(latitude)
-                    longitudeList.append(longitude)
+                if passengersInTaxi:
+                    if passengers > 0:
+                        latitudeList.append(latitude)
+                        longitudeList.append(longitude)
+                else:
+                    if passengers == 0:
+                        latitudeList.append(latitude)
+                        longitudeList.append(longitude)
 
         if k + 1 < len(masterList):
 
@@ -372,7 +378,7 @@ os.makedirs("heatmaps")
 
 while starttime < 24:
     outPutFilepath = "ShanghaiHeatMap_hour" + str(starttime) + "to" + str(endtime)
-    createTripHeatmap(outPutFilepath, False, 12, starttime, endtime)
+    createTripHeatmap(outPutFilepath, True, False, 12, starttime, endtime)
     starttime = starttime + 3
     endtime = endtime + 3
 print("Heatmaps created")
