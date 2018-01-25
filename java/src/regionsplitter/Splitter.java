@@ -106,11 +106,11 @@ public class Splitter {
 	}
 	
 	private double getLat(String line) {
-		return Double.parseDouble(getItems(line)[3]);
+		return Double.parseDouble(getItems(line)[4]);
 	}
 	
 	private double getLon(String line) {
-		return Double.parseDouble(getItems(line)[2]);
+		return Double.parseDouble(getItems(line)[3]);
 	}
 	
 	private String[] getItems(String line) {

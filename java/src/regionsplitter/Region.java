@@ -29,7 +29,7 @@ public class Region {
 		catch(IOException ioe) {
 			ioe.printStackTrace();
 		}
-		write("Region from latitude " + startLat + " to " + endLat + " and logitude " + startLon + " to " + endLon + "\n");
+		//write("Region from latitude " + startLat + " to " + endLat + " and longitude " + startLon + " to " + endLon + "\n");
 	}
 	
 	public void add(String data) {

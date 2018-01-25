@@ -10,6 +10,7 @@ import os
 This Program can create different maps and paths out of a taxi.csv file
 '''
 
+
 def timeChanger(timeToChange):
     timeFormat = datetime.strptime(timeToChange, "%Y-%m-%d %H:%M:%S")
 
@@ -21,9 +22,12 @@ def timeChangerDayTime(timeToChange):
     timeOfDay = datetime.strptime(timeToChange, "%Y-%m-%d %H:%M:%S").time()
     timeOfDay = timeOfDay.hour
     return timeOfDay
+
+
 '''
 This sorts the csv File after taxiID's
 '''
+
 
 def sort(taxiList):
     less = []
@@ -45,7 +49,7 @@ def sort(taxiList):
 
 
 """This is the filePath you have to specify"""
-filePath = '../data/taxi-medium-big.csv'
+filePath = '../data/taxi_heatmap.csv'
 
 '''This is the List containing all taxi data we work with'''
 masterList = list()
@@ -71,6 +75,7 @@ with open(filePath, newline='') as f:
 masterList = sort(masterList)
 i = 0
 
+
 # You can use this for printing the List
 def printMasterlist():
     for tempList in masterList:
@@ -80,8 +85,8 @@ def printMasterlist():
             print("Row", i, ":", output)
         i = i + 1
 
-def createMultipleMapsSortedByTaxiID(folderPath):
 
+def createMultipleMapsSortedByTaxiID(folderPath):
     latitudeList = list()
     longitudeList = list()
 
@@ -94,8 +99,8 @@ def createMultipleMapsSortedByTaxiID(folderPath):
     countTrips = 0
 
     for k in range(0, 3000):
-    #use following line if you want to iterate over the whole list
-    #for row in masterList:
+        # use following line if you want to iterate over the whole list
+        # for row in masterList:
         latitude = float(masterList[k][3])
         longitude = float(masterList[k][2])
 
@@ -134,15 +139,15 @@ def createMultipleMapsSortedByTaxiID(folderPath):
                     countTrips = 0
                     latitudeList = list()
                     longitudeList = list()
-        elif k+1 is len(masterList):
+        elif k + 1 is len(masterList):
             gmap.draw(url)
 
         '''use this if you want to print latitudes or if you do not use for(range), it is important to increase k '''
-         #print(latitudeList[k], longitudeList[k])
-         #k = k + 1
+        # print(latitudeList[k], longitudeList[k])
+        # k = k + 1
+
 
 def createOneMapWithAllTrips(folderPath, showPassengers):
-
     latitudeList = list()
     longitudeList = list()
     plotcolor = "#FF0000"
@@ -154,9 +159,9 @@ def createOneMapWithAllTrips(folderPath, showPassengers):
     gmap = gmplot.GoogleMapPlotter(31.138049, 121.479736, 12, apikey=googleApiKey)
     k = 0
 
-    for k in range(0, len(masterList)-1):
+    for k in range(0, len(masterList) - 1):
         # use following line if you want to iterate over the whole list
-        #for row in masterList:
+        # for row in masterList:
         latitude = float(masterList[k][3])
         longitude = float(masterList[k][2])
 
@@ -189,13 +194,12 @@ def createOneMapWithAllTrips(folderPath, showPassengers):
                 '''draw lines'''
                 gmap.plot(latitudeList, longitudeList, plotcolor, edge_width=1)
                 '''draw points'''
-                #gmap.scatter(latitudeList, longitudeList, '#FF0000', size=50, marker=False)
+                # gmap.scatter(latitudeList, longitudeList, '#FF0000', size=50, marker=False)
                 '''draw heatmap'''
                 gmap.heatmap(latitudeList, longitudeList)
 
                 latitudeList = list()
                 longitudeList = list()
-
 
         '''use this if you want to print latitudes or if you do not use for(range), it is important to increase k '''
         # print(latitudeList[k], longitudeList[k])
@@ -203,10 +207,12 @@ def createOneMapWithAllTrips(folderPath, showPassengers):
     url = str(folderPath) + ".html"
     gmap.draw(url)
 
+
 '''allTrips: wether a passengersInTaxi should be considered or not, plots ALL trips'''
 '''passengersInTaxi: wether all the datasets with or without passengers should be plotted'''
-def createTripHeatmap(folderPath, allTrips, passengersInTaxi, initalMapZoom, startTime, endTime):
 
+
+def createTripHeatmap(folderPath, allTrips, passengersInTaxi, initalMapZoom, startTime, endTime):
     latitudeList = list()
     longitudeList = list()
     plotcolor = "#FF0000"
@@ -217,10 +223,10 @@ def createTripHeatmap(folderPath, allTrips, passengersInTaxi, initalMapZoom, sta
     googleApiKey = "AIzaSyBFwc7dZAAcAR4AkVl6RrDam68JUWYoQKQ"
     gmap = gmplot.GoogleMapPlotter(31.230347, 121.473873, initalMapZoom, apikey=googleApiKey)
 
-    #decide which limit is appropriate
-    #limit = len(masterList)-1
+    # decide which limit is appropriate
+    limit = len(masterList) - 1
     start = 0
-    limit = 20000
+    #limit = 20000
 
     for k in range(start, limit):
         latitude = float(masterList[k][3])
@@ -231,8 +237,8 @@ def createTripHeatmap(folderPath, allTrips, passengersInTaxi, initalMapZoom, sta
 
         if (timeOfDay >= startTime and timeOfDay < endTime):
             if allTrips:
-        		    latitudeList.append(latitude)
-        		    longitudeList.append(longitude)
+                latitudeList.append(latitude)
+                longitudeList.append(longitude)
             else:
                 if passengersInTaxi:
                     if passengers > 0:
@@ -248,7 +254,7 @@ def createTripHeatmap(folderPath, allTrips, passengersInTaxi, initalMapZoom, sta
             currentTaxiID = masterList[k][1]
             nextTaxiID = masterList[k + 1][1]
 
-            #time1 = timeChanger(masterList[k][6]) # gets already set at the beginning
+            # time1 = timeChanger(masterList[k][6]) # gets already set at the beginning
             time2 = timeChanger(masterList[k + 1][6])
             timedif = time2 - time1
 
@@ -261,9 +267,9 @@ def createTripHeatmap(folderPath, allTrips, passengersInTaxi, initalMapZoom, sta
 
                 if len(latitudeList) != 0 and len(longitudeList) != 0:
                     '''draw lines'''
-                    #gmap.plot(latitudeList, longitudeList, plotcolor, edge_width=1)
+                    # gmap.plot(latitudeList, longitudeList, plotcolor, edge_width=1)
                     '''draw points'''
-                    #gmap.scatter(latitudeList, longitudeList, '#FF0000', size=50, marker=False)
+                    # gmap.scatter(latitudeList, longitudeList, '#FF0000', size=50, marker=False)
                     '''draw heatmap'''
                     # gmap parameters: latitude, longitude, treshold, radius, gradient, opacity, dissipating
                     gmap.heatmap(latitudeList, longitudeList, 10, 10, None, 0.6, True)
@@ -271,14 +277,13 @@ def createTripHeatmap(folderPath, allTrips, passengersInTaxi, initalMapZoom, sta
                 latitudeList = list()
                 longitudeList = list()
 
-
         '''use this if you want to print latitudes or if you do not use for(range), it is important to increase k '''
         # print(latitudeList[k], longitudeList[k])
     url = "heatmaps/" + str(folderPath) + ".html"
     gmap.draw(url)
 
-def createOneMapWithSpeedsZero(folderPath):
 
+def createOneMapWithSpeedsZero(folderPath):
     latitudeList = list()
     longitudeList = list()
     speed = list()
@@ -312,12 +317,11 @@ def createOneMapWithSpeedsZero(folderPath):
                 timedif = time2 - time1
 
                 if (currentTaxiID != nextTaxiID) or (timedif >= timeRange or timedif <= -timeRange):
-
                     '''use randomColor if you want to have a colorful output'''
-                    #r = lambda: random.randint(0, 255)
-                    #randomColor = '#%02X%02X%02X' % (r(), r(), r())
+                    # r = lambda: random.randint(0, 255)
+                    # randomColor = '#%02X%02X%02X' % (r(), r(), r())
                     '''draw lines'''
-                    #gmap.plot(latitudeList, longitudeList, randomColor, edge_width=5)
+                    # gmap.plot(latitudeList, longitudeList, randomColor, edge_width=5)
                     '''draw points'''
                     gmap.scatter(latitudeList, longitudeList, currentTaxiID, marker=True)
                     '''draw heatmap'''
@@ -326,12 +330,12 @@ def createOneMapWithSpeedsZero(folderPath):
                     latitudeList = list()
                     longitudeList = list()
 
-
         '''use this if you want to print latitudes or if you do not use for(range), it is important to increase k '''
         # print(latitudeList[k], longitudeList[k])
         # k = k + 1
     url = str(folderPath) + ".html"
     gmap.draw(url)
+
 
 '''set filePath for multiple maps, old maps get deleted, new ones created'''
 
@@ -348,11 +352,11 @@ print("Success, Maps created!")
 """
 
 '''create a Map of all the trips'''
-#outPutFilepath = "maps"
-#outPutFilepath = "ShanghaiMegaMap_medium_small"
+# outPutFilepath = "maps"
+# outPutFilepath = "ShanghaiMegaMap_medium_small"
 '''include false/true if you want to show a difference between cabs with passengers or without'''
-#createOneMapWithAllTrips(outPutFilepath, True)
-#print("Success, MegaMap created!")
+# createOneMapWithAllTrips(outPutFilepath, True)
+# print("Success, MegaMap created!")
 
 '''create a Map of all the trips
 outPutFilepath = "ShanghaiSpeedsZeroMap"
@@ -364,9 +368,9 @@ print("Success, SpeedsZeroMap created!")
 outPutFilepath = "ShanghaiHeatMap"
 
 '''parameters: filename, passengers(True/False), zoomsize of Map'''
-#True puts out a map with passengers, False without
-#createTripHeatmap(outPutFilepath, True, 12, 1, 2)
-#print("Success, HeatMap created!")
+# True puts out a map with passengers, False without
+# createTripHeatmap(outPutFilepath, True, 12, 1, 2)
+# print("Success, HeatMap created!")
 
 '''this section creats heatmapsNoPassengers based on '''
 starttime = 0
@@ -378,7 +382,7 @@ os.makedirs("heatmaps")
 
 while starttime < 24:
     outPutFilepath = "ShanghaiHeatMap_hour" + str(starttime) + "to" + str(endtime)
-    createTripHeatmap(outPutFilepath, True, False, 12, starttime, endtime)
+    createTripHeatmap(outPutFilepath, False, False, 12, starttime, endtime)
     starttime = starttime + 3
     endtime = endtime + 3
 print("Heatmaps created")
@@ -389,4 +393,4 @@ print("Heatmaps created")
 # gmap.scatter(latitudeList, longitudeList,, 'k', marker=True)
 # gmap.heatmap(latitudeList, longitudeList,)
 
-#gmap.draw("maps/shanghai3.html")
+# gmap.draw("maps/shanghai3.html")
