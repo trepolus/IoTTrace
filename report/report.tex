@@ -96,6 +96,7 @@ As you can see in figure \ref{fig:timegap}, the mean value is around 25 minutes 
 \caption{\label{fig:timegap}The time-gap distribution}
 \end{figure}
 The reason we chose this time range was so that for future analyses of these trips we felt that this time range would keep our results consistent and more accurate. Each of these trips would be given random colours to discern one from another if we decided to plot all of these trips like in the example given. As you can see there are many trips that have been plotted and to the eye these trips seem to be valid as well. \\
+
 \section{Heatmaps}
 The previously treated data can now be used to plot a row of heatmaps. Therefore we can vary several parameters in order to affect the appearance and its content. \\
 \subsection{Appearance parameters}
@@ -106,9 +107,24 @@ Amongst those parameters, we focus on the radius parameter, as it has the bigges
 Even more important than the appearance parameters are the parameters of the data to be displayed.
 As we cannot display all available data points, we take a random sample of a big data file, in order to get an equally distributed selection of times and taxis. Observations have shown, that this sampling gets very close to using ways more data.
 After sampling we can make use of different parameters to either plot all data or just those with or without a passenger.
+A splitting of all available data into several time slots is useful as well - in order to observe different patterns or preferred quarters of the taxis.
+As you can see in figure \ref{fig:h3to6} and \ref{fig:h15to18} it is simply visible: Between 3 and 6 a.m. there is a high density in the northern center, whereas between 3 and 6 p.m. the taxis a more concentrated in the very center of Shanghai and not that strongly scattered all over the map.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.45]{3to6.png}
+\caption{\label{fig:h3to6}Heatmap of all taxis between 3 and 6 a.m.}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.45]{15to18.png}
+\caption{\label{fig:h15to18}Heatmap of all taxis between 3 and 6 p.m.}
+\end{figure}
 
 
 \section{Future work}
+
 In order to customize and create heat maps more easier, future work will need to create an interface where data can filtered by criteria like if the taxi has or not passengers, taxiID, date, speeds, position and hours. Also split into different range hours heatmaps, in this case could be possible to use the code developed and described on this paper to create heatmaps, asking by ui the range hour. \\
 We can plan to deploy our work with real data in the future to detect the places that are collapsed and we can suggest something to improve the traffic. Taking into consideration these cases, we will validate the effectiveness of the system. \\
 Furthermore, future work will need to define some rules to detect 'friendly' taxis. For example, by work's hours and proximitely. In order to do that, we can scale our heatmap's code by defining a short distance when taxis are without passenger and in the same time. After that, we will get the taxis that are connected by these rules.
