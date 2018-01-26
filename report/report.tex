@@ -96,8 +96,15 @@ As you can see in figure \ref{fig:timegap}, the mean value is around 25 minutes 
 \caption{\label{fig:timegap}The time-gap distribution}
 \end{figure}
 The reason we chose this time range was so that for future analyses of these trips we felt that this time range would keep our results consistent and more accurate. Each of these trips would be given random colours to discern one from another if we decided to plot all of these trips like in the example given. As you can see there are many trips that have been plotted and to the eye these trips seem to be valid as well. \\
-\section{Our Metric}
-\section{Future work / Open issues}
+\section{Heatmaps}
+The previously treated data can now be used to plot a row of heatmaps. Therefore we can vary several parameters in order to affect the appearance and its content. \\
+\subsection{Appearance parameters}
+As appearance parameters we can define the center position of the heatmap which will be positioned in the very center of Shanghai. Apart from that we can define the threshold, radius, gradient, opacity and a dissipating factor. The threshold is a value that defines how many datapoints are required at a certain spot in order to be displayed as a different coloured circle which size is defined by the radius. The gradient parameter controls the colour gradient, whereas the opacity variable is responsible for the degree of transparency the circles will show. The dissipating factor controls whether the data is scattering as soon as one zoomes into the map.
+Amongst those parameters, we focus on the radius parameter, as it has the biggest influence. It highly depends on the size of the heatmap: the further we zoom is, the smaller the radius must become, otherwise we will display huge circles on a high-level-zoom map, which contain hardly any information.
+
+\subsection{Content parameters}
+
+\section{Future work}
 \section{Summary}
 
 \newpage
