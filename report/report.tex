@@ -103,6 +103,10 @@ As appearance parameters we can define the center position of the heatmap which 
 Amongst those parameters, we focus on the radius parameter, as it has the biggest influence. It highly depends on the size of the heatmap: the further we zoom is, the smaller the radius must become, otherwise we will display huge circles on a high-level-zoom map, which contain hardly any information.
 
 \subsection{Content parameters}
+Even more important than the appearance parameters are the parameters of the data to be displayed.
+As we cannot display all available data points, we take a random sample of a big data file, in order to get an equally distributed selection of times and taxis. Observations have shown, that this sampling gets very close to using ways more data.
+After sampling we can make use of different parameters to either plot all data or just those with or without a passenger.
+
 
 \section{Future work}
 \section{Summary}
