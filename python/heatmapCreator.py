@@ -11,7 +11,7 @@ This Program can create different maps and paths out of a taxi.csv file
 '''
 
 """This is the filePath you have to specify"""
-filePath = '../data/taxi_heatmap.csv'
+filePath = '../data/taxi-medium-bigbig.csv'
 
 '''This is the List containing all taxi data we work with'''
 masterList = list()
@@ -114,7 +114,8 @@ def createTripHeatmap(folderPath, allTrips, passengersInTaxi, initalMapZoom, sta
                         longitudeList.append(longitude)
 
     if len(latitudeList) != 0 and len(longitudeList) != 0:
-        gmap.heatmap(latitudeList, longitudeList, 10, 10, None, 0.6, True)
+        # gmap parameters: latitude, longitude, treshold, radius, gradient, opacity, dissipating
+        gmap.heatmap(latitudeList, longitudeList, 10, 15, None, 0.6, True)
     url = "heatmaps/" + str(folderPath) + ".html"
     gmap.draw(url)
 
@@ -128,7 +129,7 @@ os.makedirs("heatmaps")
 
 while starttime < 24:
     outPutFilepath = "ShanghaiHeatMap_hour" + str(starttime) + "to" + str(endtime)
-    createTripHeatmap(outPutFilepath, False, False, 12, starttime, endtime)
+    createTripHeatmap(outPutFilepath, True, False, 12, starttime, endtime)
     starttime = starttime + 3
     endtime = endtime + 3
 print("Heatmaps created")
