@@ -127,24 +127,25 @@ def createTripHeatmap(folderPath, allTrips, passengersInTaxi, initalMapZoom, tim
         # gmap parameters: latitude, longitude, treshold, radius, gradient, opacity, dissipating
         gmap.heatmap(latitudeLists[index], longitudeLists[index], 10, radius, None, 0.6, True)
         if (startTime + timeDifference) < 24:
-            url = "heatmaps/" + str(folderPath) + "_from_" + str(startTime) + "_to_" + str(startTime + timeDifference) + ".html"
+            url = str(folderPath) + "_from_" + str(startTime) + "_to_" + str(startTime + timeDifference) + ".html"
         else:
-            url = "heatmaps/" + str(folderPath) + "_from_" + str(startTime) + "_to_24.html"
+            url = str(folderPath) + "_from_" + str(startTime) + "_to_24.html"
 
         gmap.draw(url)
         startTime = startTime + timeDifference
         index = index + 1
 
+folderName = "heatmaps"
 
-if os.path.exists("heatmaps"):
-    shutil.rmtree("heatmaps")
-os.makedirs("heatmaps")
+if os.path.exists(folderName):
+    shutil.rmtree(folderName)
+os.makedirs(folderName)
 
-outPutFilepath = "ShanghaiHeatMap"
+outPutFilepath = folderName + "/ShanghaiHeatMap"
 
 '''parameters: filepath / name, show all trips, if alltrips is false next param: no passengers(false)/passengers(true),'''
 '''zoomfactor, timeDifference of heatmaps(1 - 24, only ints), radius'''
-createTripHeatmap(outPutFilepath, False, False, 11, 1, 15)
+createTripHeatmap(outPutFilepath, True, True, 11, 6, 15)
 
 print("Heatmaps created")
 
