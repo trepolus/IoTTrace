@@ -16,6 +16,8 @@ filePath = '../data/taxi-medium-bigbig.csv'
 '''This is the List containing all taxi data we work with'''
 masterList = list()
 
+googleApiKey = "AIzaSyBFwc7dZAAcAR4AkVl6RrDam68JUWYoQKQ"
+
 def timeChanger(timeToChange):
     timeFormat = datetime.strptime(timeToChange, "%Y-%m-%d %H:%M:%S")
 
@@ -76,12 +78,19 @@ with open(filePath, newline='') as f:
 '''allTrips: wether a passengersInTaxi should be considered or not, plots ALL trips'''
 '''passengersInTaxi: wether all the datasets with or without passengers should be plotted'''
 
-def createTripHeatmap(folderPath, allTrips, passengersInTaxi, initalMapZoom, startTime, endTime):
-    latitudeList = list()
-    longitudeList = list()
+def createTripHeatmap(folderPath, allTrips, passengersInTaxi, initalMapZoom, timeDifference, radius):
 
-    googleApiKey = "AIzaSyBFwc7dZAAcAR4AkVl6RrDam68JUWYoQKQ"
-    gmap = gmplot.GoogleMapPlotter(31.230347, 121.473873, initalMapZoom, apikey=googleApiKey)
+    # create all timeDifference Lists
+    latitudeLists = list()
+    longitudeLists = list()
+
+    startTime = 0
+
+    while startTime < 24:
+        latitudeLists.append(list())
+        longitudeLists.append(list())
+
+        startTime = startTime + timeDifference
 
     # decide which limit is appropriate
     limit = len(masterList) - 1
@@ -92,41 +101,50 @@ def createTripHeatmap(folderPath, allTrips, passengersInTaxi, initalMapZoom, sta
         latitude = float(masterList[k][3])
         longitude = float(masterList[k][2])
         passengers = int(masterList[k][7])
-        time1 = timeChanger(masterList[k][6])
         timeOfDay = timeChangerDayTime(masterList[k][6])
 
-        if (timeOfDay >= startTime and timeOfDay < endTime):
-            if allTrips:
-                latitudeList.append(latitude)
-                longitudeList.append(longitude)
+        listIndex = int(timeOfDay / timeDifference)
+
+        if allTrips:
+            latitudeLists[listIndex].append(latitude)
+            longitudeLists[listIndex].append(longitude)
+        else:
+            if passengersInTaxi:
+                if passengers > 0:
+                    latitudeLists[listIndex].append(latitude)
+                    longitudeLists[listIndex].append(longitude)
             else:
-                if passengersInTaxi:
-                    if passengers > 0:
-                        latitudeList.append(latitude)
-                        longitudeList.append(longitude)
-                else:
-                    if passengers == 0:
-                        latitudeList.append(latitude)
-                        longitudeList.append(longitude)
+                if passengers == 0:
+                    latitudeLists[listIndex].append(latitude)
+                    longitudeLists[listIndex].append(longitude)
 
-    if len(latitudeList) != 0 and len(longitudeList) != 0:
+    startTime = 0
+    index = 0
+
+    while startTime < 24:
+        gmap = gmplot.GoogleMapPlotter(31.230347, 121.473873, initalMapZoom, apikey=googleApiKey)
+
         # gmap parameters: latitude, longitude, treshold, radius, gradient, opacity, dissipating
-        gmap.heatmap(latitudeList, longitudeList, 10, 15, None, 0.6, True)
-    url = "heatmaps/" + str(folderPath) + ".html"
-    gmap.draw(url)
+        gmap.heatmap(latitudeLists[index], longitudeLists[index], 10, radius, None, 0.6, True)
+        if (startTime + timeDifference) < 24:
+            url = "heatmaps/" + str(folderPath) + "_from_" + str(startTime) + "_to_" + str(startTime + timeDifference) + ".html"
+        else:
+            url = "heatmaps/" + str(folderPath) + "_from_" + str(startTime) + "_to_24.html"
 
-'''this section creats heatmapsNoPassengers based on '''
-starttime = 0
-endtime = 1
+        gmap.draw(url)
+        startTime = startTime + timeDifference
+        index = index + 1
+
 
 if os.path.exists("heatmaps"):
     shutil.rmtree("heatmaps")
 os.makedirs("heatmaps")
 
-while starttime < 24:
-    outPutFilepath = "ShanghaiHeatMap_hour" + str(starttime) + "to" + str(endtime)
-    createTripHeatmap(outPutFilepath, True, False, 12, starttime, endtime)
-    starttime = starttime + 1
-    endtime = endtime + 1
+outPutFilepath = "ShanghaiHeatMap"
+
+'''parameters: filepath / name, show all trips, if alltrips is false next param: no passengers(false)/passengers(true),'''
+'''zoomfactor, timeDifference of heatmaps(1 - 24, only ints), radius'''
+createTripHeatmap(outPutFilepath, False, False, 11, 1, 15)
+
 print("Heatmaps created")
 
