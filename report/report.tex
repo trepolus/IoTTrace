@@ -101,19 +101,27 @@ The reason we chose this time range was so that for future analyses of these tri
 The previously treated data can now be used to plot a row of heatmaps. Therefore we can vary several parameters in order to affect the appearance and its content. \\
 \subsection{Appearance parameters}
 As appearance parameters we can define the center position of the heatmap which will be positioned in the very center of Shanghai. Apart from that we can define the threshold, radius, gradient, opacity and a dissipating factor. The threshold is a value that defines how many datapoints are required at a certain spot in order to be displayed as a different coloured circle which size is defined by the radius. The gradient parameter controls the colour gradient, whereas the opacity variable is responsible for the degree of transparency the circles will show. The dissipating factor controls whether the data is scattering as soon as one zoomes into the map.
-Amongst those parameters, we focus on the radius parameter, as it has the biggest influence. It highly depends on the size of the heatmap: the further we zoom is, the smaller the radius must become, otherwise we will display huge circles on a high-level-zoom map, which contain hardly any information. As we only compute a certain restricted area, we can focus on three zoom levels, which we have to find an optimal radius value for.
+Amongst those parameters, we focus on the radius parameter, as it has the biggest influence. It highly depends on the size of the heatmap: the further we zoom is, the smaller the radius must become, otherwise we will display huge circles on a high-level-zoom map, which contain hardly any information.
 
 \subsection{Content parameters}
 Even more important than the appearance parameters are the parameters of the data to be displayed.
-In order to not influence our observed results, we decided to process only whole files at a single time. Therefore, we adapted our algorithm
+As we cannot display all available data points, we take a random sample of a big data file, in order to get an equally distributed selection of times and taxis. Observations have shown, that this sampling gets very close to using ways more data.
 After sampling we can make use of different parameters to either plot all data or just those with or without a passenger.
 A splitting of all available data into several time slots is useful as well - in order to observe different patterns or preferred quarters of the taxis.
-As you can see in figure \ref{fig:h3to6} and \ref{fig:h15to18} it is simply visible: Between 3 and 6 a.m. there is a high density in the northern center, whereas between 3 and 6 p.m. the taxis a more concentrated in the very center of Shanghai and not that strongly scattered all over the map. For the above shown heatmaps we used a time interval of three hours to aggregate the data. Comparing to heatmaps with an interval of one hour have shown that it shows all necessary trends throughout the day.
+As you can see in figure \ref{fig:h3to6} and \ref{fig:h15to18} it is simply visible: Between 3 and 6 a.m. there is a high density in the northern center, whereas between 3 and 6 p.m. the taxis a more concentrated in the very center of Shanghai and not that strongly scattered all over the map.
 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.45]{3to6.png}
 \caption{\label{fig:h3to6}Heatmap of all taxis between 3 and 6 a.m.}
+\end{figure}
+
+In order to find a suitable time window between different heatmaps it is necessary to compare all time slots to each other. Figure \ref{fig:multiple heatmaps} shows that the time window of three hours makes perfectly sense. It is easy to recognise taxi movement that shifts from the center to the north, where as in a time window of six hours that movement is hard to make out. One hour timeslots would be suitable as well but only if you want to find small changes, whereas three hours represent a good example of a daytime.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.3]{multiple_heatmaps_pass.png}
+\caption{\label{fig:multiple heatmaps}Heatmaps of taxis with passengers, timeslots (left to right, up to down): 0 to 6, 0 to 3, 0 to 1, 3 to 6 }
 \end{figure}
 
 \begin{figure}[h]
@@ -122,11 +130,6 @@ As you can see in figure \ref{fig:h3to6} and \ref{fig:h15to18} it is simply visi
 \caption{\label{fig:h15to18}Heatmap of all taxis between 3 and 6 p.m.}
 \end{figure}
 
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.3]{multiple_heatmaps_pass.png}
-\caption{\label{fig:speed_before}Heatmaps of taxis with passengers, timeslots (left to right, up to down): 0 to 6, 0 to 3, 0 to 1, 3 to 6 }
-\end{figure}
 
 \section{Future work}
 
