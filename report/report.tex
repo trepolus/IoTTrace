@@ -103,7 +103,7 @@ The reason we chose this time range was so that for future analyses of these tri
 The previously treated data can now be used to plot a row of heatmaps. Therefore we can vary several parameters in order to affect the appearance and its content. \\
 \subsection{Appearance parameters}
 As appearance parameters we can define the center position of the heatmap which will be positioned in the very center of Shanghai. Apart from that we can define the threshold, radius, gradient, opacity and a dissipating factor. The threshold is a value that defines how many datapoints are required at a certain spot in order to be displayed as a different coloured circle which size is defined by the radius. The gradient parameter controls the colour gradient, whereas the opacity variable is responsible for the degree of transparency the circles will show. The dissipating factor controls whether the data is scattering as soon as one zooms into the map.
-Amongst those parameters, we focus on the radius parameter, as it has the biggest influence. It highly depends on the size of the heatmap: the further we zoom in, the smaller the radius must become, otherwise we will display huge circles on a high-level-zoom map, which contains hardly any information. As we only compute a certain restricted area, we can focus on three zoom levels, which we have to find an optimal radius value for. In general one can say, that for each level we zoom in, we should double the radius in order to keep hotspots at the same points and with the same size. A reasonable value for the radius at zoom level would be 15 pixels, so 30 pixels for level 12 or 60 pixels for level 13 deliver reasonable results as well. Figures \ref{fig:zoom1} and \ref{fig:zoom2} show the negative extremes: A too big radius leads to a large and often connected hotspot, whereas hardly any hotspots can be found when using a radius too small.
+Amongst those parameters, we focus on the radius parameter, as it has the biggest influence. It highly depends on the size of the heatmap: the further we zoom in, the smaller the radius must become, otherwise we will display huge circles on a high-level-zoom map, which contains hardly any information. As we only compute a certain restricted area, we can focus on three zoom levels, which we have to find an optimal radius value for. In general one can say, that for each level we zoom in, we should double the radius in order to keep hotspots at the same points and with the same size. A reasonable value for the radius at zoom level 11 would be 15 pixels, so 30 pixels for level 12 or 60 pixels for level 13 deliver reasonable results as well. Figures \ref{fig:zoom1} and \ref{fig:zoom2} show the negative extremes: A too big radius leads to a large and often connected hotspot, whereas hardly any hotspots can be found when using a radius too small.
 
 \begin{figure}[h]
 \centering
@@ -121,48 +121,27 @@ Amongst those parameters, we focus on the radius parameter, as it has the bigges
 Even more important than the appearance parameters are the parameters of the data to be displayed.
 In order to not influence our observed results, we decided to process only whole files at a single time. Therefore, we adapted our algorithm.
 After sampling we can make use of different parameters to either plot all data or just those with or without a passenger.
-A splitting of all available data into several time slots is useful as well - in order to observe different patterns or preferred districts of the taxis.
-As you can see in figure \ref{fig:h3to6} and \ref{fig:h15to18} it is simply visible: Between 3 and 6 a.m. there is a high density in the northern center, whereas between 3 and 6 p.m. the taxis a more concentrated in the very center of Shanghai and is not that strongly scattered all over the map.
+A splitting of all available data into several time slots is useful as well in order to observe different patterns or preferred districts of the taxis.
+As you can see in figure \ref{fig:allPass 3h-6h and 15h-18h} it is simply visible: Between 3 and 6 a.m. there is a high density in the northern center, whereas between 3 and 6 p.m. the taxis a more concentrated in the very center of Shanghai and is not that strongly scattered all over the map.
 
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.45]{3to6.png}
-\caption{\label{fig:h3to6}Heatmap of all taxis between 3 and 6 a.m.}
+\begin{figure}
+\begin{center}
+\includegraphics[width=.3\textwidth]{3to6.png}
+\includegraphics[width=.3\textwidth]{15to18.png}
+\end{center}
+\caption{\label{fig:allPass 3h-6h and 15h-18h}Heatmap of all taxis between 3-6 a.m. in comparison with a Heatmap of all taxis between 3-6 p.m.}
 \end{figure}
 
-In order to find a suitable time window between different heatmaps it is necessary to compare all time slots to each other. Figure \ref{fig:multiple heatmaps} shows that the time window of three hours makes perfect sense. It is easy to recognise taxi movement that shifts from the center towards the north, where as in a time window of six hours that movement is hard to make out. One hour timeslots would be suitable as well but only if you want to find small changes, whereas three hours represent a good example of a daytime.
+\subsection{Timeslots and Division}
 
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.25]{../images/multiple_heatmaps_pass.PNG}
-\caption{\label{fig:multiple heatmaps}Heatmaps of taxis with passengers, timeslots (left to right, up to down): 0 to 6, 0 to 3, 0 to 1, 3 to 6 }
-\end{figure}
+In order to find a suitable time window and the perfect timeslot between different heatmaps it is necessary to compare all time slots to each other instead of simply guessing a random timeslot. We started with a range of one hour and therefore created 24 different heatmaps. Furthermore we generated numerous heatmaps for two, three, six and twelve hour slots, as well as a heatmap of the whole dataset which represents 24 hours. Those tests were concluded on taxi drivers that currently drive with passengers as well as those that drive without them.\\
 
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.45]{15to18.png}
-\caption{\label{fig:h15to18}Heatmap of all taxis between 3 and 6 p.m.}
-\end{figure}
+In Figure \ref{fig:w pass 0-3 1h&3h}, \ref{fig:w pass 0-12 3h&6h}, and \ref{fig:w pass 0-12 6h&12h} we can see heatmaps of taxis with passengers. They are splitted up in 1, 3, 6 and 12 hour timeslots, always starting at midnight. The nearest or rather neighbouring timeslots are put into relation to each other in each figure.\\
+Figures \ref{fig:wo pass 0-3 1h&3h}, \ref{fig:wo pass 0-12 3h&6h}, and \ref{fig:wo pass 0-12 6h&12h} show the same patterns but use data of taxis without passengers.
+All named heatmaps follow the directions left to right and top to down.\\
 
-\subsection{Observable Patterns}
-By comparing those different heatmaps, we can find several different behavioural patterns. \\
-For example taxi traffic could be improved by trying to minimize the difference in the heatmaps with and without passengers from 0 to 3 a.m.: Whilst there are a lot of free taxis in the north of the city, the highest density of trips is located directly in the center. Apparently there was an underestimation of the taxi demand in the center and maybe an overestimation in the north. \\
-Two other interesting observations concern the amount of taxis in and out of use. \\
-First, the density and thereby the amount of taxis without a passenger decrease significantly from the second last to the last 3h interval, whilst the amount of taxis in use even increases slightly. That shows that the available taxis are used more efficiently in this period, as waiting times decrease and the passengers per taxi ratio rises. \\
-Second, a good time to start working for a taxi driver is around 6 a.m., as the density of unused taxis strongly decreases, after it has been pretty high before. \\
-Considering all trips, we can also gain information about the taxis in service. \\
-For example, the area where most of them are located is definitely smaller after 9 a.m. than before, which might be because of a previous movement of a significant amount of people towards the city center. \\
-
-
-\section{Future work}
-
-In order to customize and create easier heat maps, future work will be needed to create an interface where data can be filtered by criteria like whether the taxi transports passengers, a unique identifier for each taxi, date, speed, position and time.  \\
-We can plan to deploy our work with real data in the future to detect the places that are heavily populated and used so that we can suggest some measures to improve the traffic flow. Taking into consideration these cases, we will be able to validate the effectiveness of the system. \\
-Furthermore, future work will need to define some rules to detect 'friendly' taxis, for example by working hours and proximity. In order to do that, we can scale our heatmaps' code by defining a short distance when taxis are without passenger and in the same time. After that, we will get the taxis that are connected by these behavioural patterns.
-
-\section{Summary}
-
-The following heatmaps show the difference between multiple intervals. They are following a left right top down scheme.
+When taking a look at Figure \ref{fig:w pass 0-3 1h&3h} and \ref{fig:wo pass 0-3 1h&3h} that each show three 1 hour slots compared to a 3 hour slot, you can make out that between the one hour slots there is hardly any difference. Taxis with passengers are slowly moving from the center of Shanghai to the north of the city and the other way round for taxis without passengers, but this is also easy to make out on the 3 hour time slots.\\
+If we go on and analyse given 3 hour slots to the 6 hour slots (Figure \ref{fig:w pass 0-12 3h&6h} and \ref{fig:wo pass 0-12 3h&6h}) we come to the conclusion that a 6 hour slot is too imprecise, because it is hard to make out specific movements of taxis, an observation that is true for all 12 hour slots as well. Therefore we concluded that we should focus on heatmaps divided into 3 hour slots, in order to make out how and where taxis move around the city of Shanghai.
 
 \begin{figure}
 \begin{center}
@@ -210,20 +189,20 @@ The following heatmaps show the difference between multiple intervals. They are 
 
  \begin{figure}
  \begin{center}
-\includegraphics[width=.2\textwidth]{../heatmaps/6h_slots/0-to-6_without-pass.png}
-\includegraphics[width=.2\textwidth]{../heatmaps/6h_slots/6-to-12_without-pass.png}
-\includegraphics[width=.2\textwidth]{../heatmaps/12h_slots/0-to-12_without-pass.png}
-\end{center}
-\caption{\label{fig:w pass 0-12 6h&12h}Heatmap of all taxis between 0 and 12 a.m. in 6 hour intervals  without passengers in comparison to maps between the same time with a time division of 12 hours}
-\end{figure}
-
- \begin{figure}
- \begin{center}
 \includegraphics[width=.2\textwidth]{../heatmaps/6h_slots/0-to-6_with-pass.png}
 \includegraphics[width=.2\textwidth]{../heatmaps/6h_slots/6-to-12_with-pass.png}
 \includegraphics[width=.2\textwidth]{../heatmaps/12h_slots/0-to-12_with-pass.png}
 \end{center}
 \caption{\label{fig:w pass 0-12 6h&12h}Heatmap of all taxis between 0 and 12 a.m. in 6 hour intervals  with passengers in comparison to maps between the same time with a time division of 12 hours}
+\end{figure}
+
+ \begin{figure}
+ \begin{center}
+\includegraphics[width=.2\textwidth]{../heatmaps/6h_slots/0-to-6_without-pass.png}
+\includegraphics[width=.2\textwidth]{../heatmaps/6h_slots/6-to-12_without-pass.png}
+\includegraphics[width=.2\textwidth]{../heatmaps/12h_slots/0-to-12_without-pass.png}
+\end{center}
+\caption{\label{fig:wo pass 0-12 6h&12h}Heatmap of all taxis between 0 and 12 a.m. in 6 hour intervals  without passengers in comparison to maps between the same time with a time division of 12 hours}
 \end{figure}
 
 \section{Conclusion}
@@ -233,6 +212,24 @@ We mentioned on the observable patterns that it is possible to find several diff
 \\
 In order to optimize the work of taxi and to save the time for finding a taxi, while reducing waiting times for both the driver and for customer, we propose the following recommendations: start working time for taxi driver, areas to pick up a client taking into consideration the hour of the day and add more parking places or taxi stations separately but near of the highly demand areas in order to improve the traffic.
 
+
+\subsection{Observable Patterns}
+By comparing those different heatmaps, we can find several different behavioural patterns. \\
+For example taxi traffic could be improved by trying to minimize the difference in the heatmaps with and without passengers from 0 to 3 a.m.: Whilst there are a lot of free taxis in the north of the city, the highest density of trips is located directly in the center. Apparently there was an underestimation of the taxi demand in the center and maybe an overestimation in the north. \\
+Two other interesting observations concern the amount of taxis in and out of use. \\
+First, the density and thereby the amount of taxis without a passenger decrease significantly from the second last to the last 3h interval, whilst the amount of taxis in use even increases slightly. That shows that the available taxis are used more efficiently in this period, as waiting times decrease and the passengers per taxi ratio rises. \\
+Second, a good time to start working for a taxi driver is around 6 a.m., as the density of unused taxis strongly decreases, after it has been pretty high before. \\
+Considering all trips, we can also gain information about the taxis in service. \\
+For example, the area where most of them are located is definitely smaller after 9 a.m. than before, which might be because of a previous movement of a significant amount of people towards the city center. \\
+
+
+\section{Future work}
+
+In order to customize and create easier heat maps, future work will be needed to create an interface where data can be filtered by criteria like whether the taxi transports passengers, a unique identifier for each taxi, date, speed, position and time.  \\
+We can plan to deploy our work with real data in the future to detect the places that are heavily populated and used so that we can suggest some measures to improve the traffic flow. Taking into consideration these cases, we will be able to validate the effectiveness of the system. \\
+Furthermore, future work will need to define some rules to detect 'friendly' taxis, for example by working hours and proximity. In order to do that, we can scale our heatmaps' code by defining a short distance when taxis are without passenger and in the same time. After that, we will get the taxis that are connected by these behavioural patterns.
+
+\section{Summary}
 
 \newpage
 \bibliography{biblio}
