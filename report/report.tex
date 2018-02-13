@@ -36,10 +36,16 @@ shanan.lynch@insa-lyon.fr}
 \newpage
 
 \begin{abstract}
- 
+ With datasets from IOT traces on taxis acquired by INSA Lyon, we set out to find interesting human behaviours or patterns to act on with this data. We first needed to choose what data to use or not to use to discern these human behaviours and patterns. And when these data were chosen, if they were consistent.
+We used speed distribution graphs to determine whether taxis in a certain area were driving at a "realistic" speed and if they were above that, that data would be removed.
+To find patterns in the data we used heat maps combined with certain times to find out where most taxis were at a certain time. We picked a certain longitude and latitude so we could zero in on the area of the map that we were most interested in.
+The heatmaps combined with certain times and in a specific longitude and latitude seemed to be the best way to find patterns.
+We found that between 0 - 3 a.m. there is an underestimation of taxi demand in the centre and an overestimation of taxi demand in the north. And that 6 a.m. is a good time for a taxi driver to start working.
+With the patterns we found and the data we received we would be able to recommend start working times for taxis, best areas to pick up a client at a certain time and add taxi ranks near to high in demand areas.
 \end{abstract}
 
 \section{Introduction}
+With datasets from IOT traces on taxis acquired by INSA Lyon, we set out to find interesting human behaviours or patterns to act on with this data. This data includes the  taxi I.D., longitude, latitude, speed, angle, date/time and the number of passengers. You will see how we chose our data and what patterns and behaviours we found. And with this what we chose to do with this information.
 \label{sec:Introduction}
 
 \section{Related work}
