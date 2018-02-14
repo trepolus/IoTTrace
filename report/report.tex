@@ -36,18 +36,17 @@ shanan.lynch@insa-lyon.fr}
 \newpage
 
 \begin{abstract}
-With a growing interest in IoT trace information (Internet of Things) in recent years, data mining this information has been able to show interesting human behaviours.
-These interesting human behaviours found from data mining and deployed in the right way, could affect the way not just individuals work but how whole industries work as well.
-In this paper we present the study of using data mining and mapping methods, to find human behaviours that would affect taxi drivers and the whole taxi industry in Shanghai. The results show that this hypothesis would be possible.
+With a growing interest in Internet of Things (IoT) trace information in recent years, data mining has proven itself to be an excellent method for detecting fascinating human behaviours.
+Deployed in the right manner these behaviours could not only affect the way individuals act but influence the demeanour of sizeable companies.
+This paper mainly focusses on analysing IoT traces of taxis in the area of Shanghai in order to find said behaviours.
 \end{abstract}
 
 \section{Introduction}
-The ability to data mine information gathered from IoT traces (Internet of Things) has gathered a lot of traction throughout recent years. The information that can be gathered by these IoT traces e.g(house appliances, phones and vehicles) are endless. 
-With our focus on vehicles and more specifically taxis, the possibility to improve taxi drivers, taxi companies and taxi reliability are very possible with IoT trace information. 
-As there are many possibilities to explore with taxi IoT trace information that the researches in the first article in related work have explored. These researches created a metropolitan taxi mobility model from the same information that we would be using, demonstrating the vast differences in ideas in the use of the information.
-As others have gone by the modelling route, we decided to find the patterns in human behaviour that would affect the clients, the taxi drives and the profit for taxi companies. To find this human behaviour we had to make sure that the information gathered by the IoT trace was consistent. After this analysis we used various mapping methods to determine unique insights into the behaviours of the taxi drivers.
-With this information and the ability to find human behaviours we decided that the information we found would be of use. And if deployed would affect the way taxi drivers deploy and taxi companies work in a positive way.
-However this is not the only article that would result in positive outcomes with similar information as shown in related work. 
+The ability to data mine information gathered from IoT traces has attracted a lot of attention throughout recent years. The information that can be collected via IoT devices used in house appliances, phones and vehicles are endless.
+Our focus on vehicles and more specifically taxis gives us the opportunity to change or even improve the daily routine of taxi drivers, taxi reliability, and taxi companies.
+Articles mentioned in the related work section (\ref{sec:relatedWork}) of this paper display the tremendous potentials of taxi IoT traces that can and already have been explored.
+We decided to concentrate on patterns of human behaviour that would affect clients, taxi drives, and profit for taxi companies. Furthermore we had to assure ourselves that the information gathered by the IoT trace was consistent. Following this analysis we used various mapping methods to determine unique insights into the behaviours of all taxi drivers.
+Gathered information and the ability to find human behaviours lead us to the conclusion that if deployed it would affect the way taxi drivers and taxi companies work positively.
 \label{sec:Introduction}
 
 \section{Related work}
@@ -61,6 +60,8 @@ T-Finder provides taxi drivers with detailed information not only about the rout
 LCP \cite{eff} uses the same method as T-Finder \cite{tf} to extract the representative small areas from the trajectories. The goal of the LCP route recommendation algorithm is to find an energy-efficient mobile recommender system by exploiting the energy-efficient driving patterns extracted from the location traces of Taxi drivers. This system has the ability to recommend a sequence of potential pick-up points for a driver in a way such that the potential travel distance before getting a customer is minimized. \\
 Identifying user interests and providing personalized suggestions, the different recommender systems address and collect information to reduce the spent time of passengers and taxi drivers. Recommender systems \cite{tow} presents an overview of the field of recommender systems and describes the current generation of recommendation methods and various ways to extend the capabilities of recommender systems as well. This article concluded that recommender systems made significant progress over the last decade when numerous content-based, collaborative and hybrid methods were proposed and several "industrial-strength" systems have been developed. \\
 Recommender systems by mining large-scale \cite{min1,min2} data develop a smart recommendation system based on extracted patterns and data from studies focused of large-scale trace data collected by a probe taxi. Large-scale trace data provide us with opportunities to extract useful transportation patterns and utilize these patterns to improve efficiency.
+\label{sec:relatedWork}
+
 \section{Data consistency}
 The first task is to check and improve the consistency of the provided data, so that we are able to compute our chosen metric accurately. \\
 At the beginning we have to filter all impossible values of the variables we're operating on. For example, our R script removes all entries with a negative speed value or timestamps outside of the interval in which these data have been collected.  Apparently the trace files only contain consistent data sets as our script has not detected and removed a single error. \\
