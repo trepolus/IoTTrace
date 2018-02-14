@@ -6,7 +6,7 @@
 \usepackage{wrapfig}
 \author{Lucas Kummer, Samuel Sedlmeir, Lucas Colantuono, Shanan Lynch}
 
-\title{IoT Trace Analysis}
+\title{Recommendations guiding taxi traffic by heatmaps}
 \date{\today}
 \markboth{Improving local transports by analysing taxi meta data}{}
 
@@ -108,7 +108,7 @@ As you can see in figure \ref{fig:timegap}, the mean value is around 25 minutes 
 \end{figure}
 The reason we chose this time range was because for future analyses of these trips this time range would keep our results consistent and accurate. Each of the trips would be given random colours to discern one from another if we decided to plot all of these trips like in the example given. \\
 
-\section{Heatmaps}
+\section{Geographical Analysis}
 The previously treated data can now be used to plot a row of heatmaps. Therefore we can vary several parameters in order to affect the appearance and its content.\\
 In order to make sense of the vast amount of data, we had to read and structure it. We used Python and R to read out and sort it to our preferences. Especially the Python package "gmplot" \cite{gmplot} helped us plotting heatmaps and trips on the well known Google Maps platform. Combined with our programmed scripts, we were able to create multiple maps adapted to our liking. You can find a link to our Github Repository in the References. \cite{github-IoTTrace} \\
 \subsection{Appearance parameters}
