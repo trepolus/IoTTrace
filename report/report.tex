@@ -8,7 +8,6 @@
 
 \title{Recommendations guiding taxi traffic by heatmaps}
 \date{\today}
-\markboth{Improving local transports by analysing taxi meta data}{}
 
 \author{
 \IEEEauthorblockN{Lucas Kummer}
@@ -108,10 +107,10 @@ As you can see in figure \ref{fig:timegap}, the mean value is around 25 minutes 
 \end{figure}
 The reason we chose this time range was because for future analyses of these trips this time range would keep our results consistent and accurate. Each of the trips would be given random colours to discern one from another if we decided to plot all of these trips like in the example given. \\
 
-\section{Geographical Analysis}
+\section{Geographical Analysis: Taxi spotting versus client pickup}
 The previously treated data can now be used to plot a row of heatmaps. Therefore we can vary several parameters in order to affect the appearance and its content.\\
 In order to make sense of the vast amount of data, we had to read and structure it. We used Python and R to read out and sort it to our preferences. Especially the Python package "gmplot" \cite{gmplot} helped us plotting heatmaps and trips on the well known Google Maps platform. Combined with our programmed scripts, we were able to create multiple maps adapted to our liking. You can find a link to our Github Repository in the References. \cite{github-IoTTrace} \\
-\subsection{Appearance parameters}
+\subsection{Heatmap appearance parameters}
 As appearance parameters we can define the center position of the heatmap which will be positioned in the very center of Shanghai. Apart from that we can define the threshold, radius, gradient, opacity and a dissipating factor. The threshold is a value that defines how many data points are required at a certain spot in order to be displayed as a different coloured circle whose size is defined by the radius. The gradient parameter controls the colour gradient, whereas the opacity variable is responsible for the degree of transparency the circles will show. The dissipating factor controls whether the data is scattering as soon as one zooms into the map.
 Amongst those parameters, we focus on the radius parameter, as it has the biggest influence. It highly depends on the size of the heatmap: the further we zoom in, the smaller the radius must become, otherwise we will display huge circles on a high-level-zoom map, which contains hardly any information. As we only compute a certain restricted area, we can focus on three zoom levels, which we have to find an optimal radius value for. In general one can say, that for each level we zoom in, we should double the radius in order to keep hotspots at the same points and with the same size. A reasonable value for the radius at zoom level 11 would be 15 pixels, so 30 pixels for level 12 or 60 pixels for level 13 deliver reasonable results as well. Figures \ref{fig:zoom1} and \ref{fig:zoom2} show the negative extremes: A too big radius leads to a large and strongly connected hotspot, whereas hardly any hotspots can be found when using a radius too small.
 
@@ -127,7 +126,7 @@ Amongst those parameters, we focus on the radius parameter, as it has the bigges
 \caption{\label{fig:zoom2}Heatmap with a too high radius}
 \end{figure}
 
-\subsection{Content parameters}
+\subsection{Heatmap content parameters}
 Even more important than the appearance parameters are the parameters of the data to be displayed.
 In order to not influence our observed results by sampling, we decided to process only whole files at a single time. Therefore, we adapted our algorithm.
 After sampling we can make use of different parameters to either plot all data or just those with or without a passenger.
