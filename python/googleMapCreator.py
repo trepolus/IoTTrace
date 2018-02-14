@@ -29,27 +29,26 @@ This sorts the csv File after taxiID's
 '''
 
 
-def sort(taxiList):
+def sort(list, index):
     less = []
     equal = []
     greater = []
 
-    if len(taxiList) > 1:
-        pivot = taxiList[0][1]
-        for x in taxiList:
-            if x[1] < pivot:
+    if len(list) > 1:
+        pivot = list[0][index]
+        for x in list:
+            if x[index] < pivot:
                 less.append(x)
-            elif x[1] == pivot:
+            elif x[index] == pivot:
                 equal.append(x)
             else:
                 greater.append(x)
-        return sort(less) + equal + sort(greater)  # Just use the + operator to join lists
+        return sort(less, index) + equal + sort(greater, index)  # Just use the + operator to join lists
     else:
-        return taxiList
-
+        return list
 
 """This is the filePath you have to specify"""
-filePath = '../data/taxi-medium-small.csv'
+filePath = '../data/taxi-medium-bigbig.csv'
 
 '''This is the List containing all taxi data we work with'''
 masterList = list()
@@ -72,10 +71,27 @@ with open(filePath, newline='') as f:
         masterList.append(rowList)
         rownum = rownum + 1
 
-masterList = sort(masterList)
+masterList = sort(masterList, 1)
+
+
+masterListTimeSorted = list()
+def sortMasterlistAfterTime():
+    tempTaxiTimeList = list()
+    for j in range(0, len(masterList)-1):
+        if j+1 < len(masterList):
+            currentTaxiID = masterList[j][1]
+            nextTaxiID = masterList[j + 1][1]
+            time = timeChanger(masterList[j][6])
+            masterList[j][6] = time
+            tempTaxiTimeList.append(masterList[j])
+            if currentTaxiID != nextTaxiID:
+                for item in sort(tempTaxiTimeList, 6):
+                    masterListTimeSorted.append(item)
+                tempTaxiTimeList = list()
+
+sortMasterlistAfterTime()
+
 i = 0
-
-
 # You can use this for printing the List
 def printMasterlist():
     for tempList in masterList:
@@ -98,22 +114,22 @@ def createMultipleMapsSortedByTaxiID(folderPath):
     k = 0
     countTrips = 0
 
-    for k in range(0, 3000):
+    for k in range(0, len(masterListTimeSorted)-1):
         # use following line if you want to iterate over the whole list
-        # for row in masterList:
-        latitude = float(masterList[k][3])
-        longitude = float(masterList[k][2])
+        # for row in masterListTimeSorted:
+        latitude = float(masterListTimeSorted[k][3])
+        longitude = float(masterListTimeSorted[k][2])
 
         latitudeList.append(latitude)
         longitudeList.append(longitude)
 
-        if k + 1 < len(masterList):
+        if k + 1 < len(masterListTimeSorted):
 
-            currentTaxiID = masterList[k][1]
-            nextTaxiID = masterList[k + 1][1]
+            currentTaxiID = masterListTimeSorted[k][1]
+            nextTaxiID = masterListTimeSorted[k + 1][1]
 
-            time1 = timeChanger(masterList[k][6])
-            time2 = timeChanger(masterList[k + 1][6])
+            time1 = masterListTimeSorted[k][6]
+            time2 = masterListTimeSorted[k + 1][6]
             timedif = time2 - time1
 
             if (currentTaxiID != nextTaxiID) or (timedif >= timeRange or timedif <= -timeRange):
@@ -122,11 +138,11 @@ def createMultipleMapsSortedByTaxiID(folderPath):
                 r = lambda: random.randint(0, 255)
                 randomColor = '#%02X%02X%02X' % (r(), r(), r())
                 '''draw lines'''
-                gmap.plot(latitudeList, longitudeList, "#0000FF", edge_width=5)
+                gmap.plot(latitudeList, longitudeList, randomColor, edge_width=5)
                 '''draw points'''
-                gmap.scatter(latitudeList, longitudeList, '#FF0000', size=50, marker=False)
+                #gmap.scatter(latitudeList, longitudeList, '#FF0000', size=50, marker=False)
                 '''draw heatmap'''
-                gmap.heatmap(latitudeList, longitudeList)
+                #gmap.heatmap(latitudeList, longitudeList)
 
                 countTrips = countTrips + 1
                 latitudeList = list()
@@ -139,7 +155,7 @@ def createMultipleMapsSortedByTaxiID(folderPath):
                     countTrips = 0
                     latitudeList = list()
                     longitudeList = list()
-        elif k + 1 is len(masterList):
+        elif k + 1 is len(masterListTimeSorted):
             gmap.draw(url)
 
         '''use this if you want to print latitudes or if you do not use for(range), it is important to increase k '''
@@ -346,11 +362,10 @@ if os.path.exists(outPutFilepath):
     shutil.rmtree("maps")
 os.makedirs(outPutFilepath)
 
-"""
+
 #creates multiple maps into outputPath
 createMultipleMapsSortedByTaxiID(outPutFilepath)
 print("Success, Maps created!")
-"""
 
 '''create a Map of all the trips'''
 # outPutFilepath = "maps"
@@ -372,8 +387,7 @@ outPutFilepath = "ShanghaiHeatMap"
 # True puts out a map with passengers, False without
 # createTripHeatmap(outPutFilepath, True, 12, 1, 2)
 # print("Success, HeatMap created!")
-
-'''this section creats heatmapsNoPassengers based on '''
+'''
 starttime = 0
 endtime = 3
 
@@ -387,7 +401,7 @@ while starttime < 24:
     starttime = starttime + 3
     endtime = endtime + 3
 print("Heatmaps created")
-
+'''
 '''some examples how to plot a map'''
 # gmap.plot(latitudeList, longitudeList, 'cornflowerblue', edge_width=2)
 # gmap.scatter(latitudeList, longitudeList, '#FF0000', size=55, marker=False)

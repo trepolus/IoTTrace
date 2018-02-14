@@ -6,7 +6,7 @@
 \usepackage{wrapfig}
 \author{Lucas Kummer, Samuel Sedlmeir, Lucas Colantuono, Shanan Lynch}
 
-\title{Recommendations guiding taxi traffic by heatmaps}
+\title{Guiding taxi traffic with geographical metadata analysis}
 \date{\today}
 
 \author{
@@ -92,12 +92,21 @@ After restricting the data to this area, we observed a change in the distributio
 
 \subsection{Gap filtering}
 After this procedure we are already able to plot a schematic map of Shanghai, although our dataset still contains data to be filtered. We search for those taxi traces with a time gap between two data entries. This gap could either be a result of a data transmission error or an indicator for the beginning of a new taxi trip.\\
+
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.35]{plotalltrips.png}
 \caption{\label{fig:plotalltrips}All calculated trips}
 \end{figure}
-To define these trips we had to choose a time gap that was appropriate for this data. We defined a trip by the absolute value of a time gap between two data. If it is bigger than 600 seconds, it gets separated and becomes a new trip.\\
+
+To define these trips we had to choose a time gap that was appropriate for our data. We defined a trip by the absolute value of a time gap between two data. If it is bigger than 600 seconds, it gets separated and becomes a new trip. Figure \ref{fig:plotTripsOneTaxi} displays a map showing all trips of a randomly chosen taxi. In order to distinguish between them, they are all coloured differently. When choosing a bigger time gap, dots would get connected that have nothing to do with each other, whereas a smaller time gap would result in no connected dots at all. \\
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.35]{taxi_10209_singletrips.png}
+\caption{\label{fig:plotTripsOneTaxi}All trips of the taxi with the ID: 10209 }
+\end{figure}
+
 As you can see in figure \ref{fig:timegap}, the mean value is around 25 minutes per gap in this case, while most of the gaps are shorter than 20 minutes. \\
 \begin{figure}[h]
 \centering

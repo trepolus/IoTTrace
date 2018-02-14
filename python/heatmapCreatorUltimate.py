@@ -145,7 +145,7 @@ outPutFilepath = folderName + "/ShanghaiHeatMap"
 
 '''parameters: filepath / name, show all trips, if alltrips is false next param: no passengers(false)/passengers(true),'''
 '''zoomfactor, timeDifference of heatmaps(1 - 24, only ints), radius'''
-createTripHeatmap(outPutFilepath, True, True, 11, 6, 15)
+createTripHeatmap(outPutFilepath, False, True, 11, 3, 15)
 
 print("Heatmaps created")
 
