@@ -46,9 +46,9 @@ summary(data$speed)
 #upper whisker
 upq <- quantile(data$speed, 0.75)
 # limit is 3x the interquartile range
-# limit <- upq + 3*(upq-quantile(data$speed, 0.25))
-# limit <- 100
-# data <- subset(data, speed < limit)
+limit <- upq + 3*(upq-quantile(data$speed, 0.25))
+limit <- 100
+data <- subset(data, speed < limit)
 summary(data$speed)
 dropped <- datacount - nrow(data)
 #number of dropped observations
