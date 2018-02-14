@@ -1,11 +1,10 @@
 setwd("/home/s/Dokumente/R&D/IoTTrace/data/")
-data <- read.csv("taxi-medium-big.csv")
+data <- read.csv("taxi-medium-small.csv")
 names(data) <- c("id","taxiid","longitude","latitude","speed","angle","datetime","status","extendedstatus","reversed")
 dataorig <- data
 datacount <- nrow(data)
 #number of read observations
 datacount
-
 
 #bullshit value filtering
 data <- subset(data, speed >= 0 && speed < 300)
@@ -47,7 +46,7 @@ summary(data$speed)
 upq <- quantile(data$speed, 0.75)
 # limit is 3x the interquartile range
 limit <- upq + 3*(upq-quantile(data$speed, 0.25))
-limit <- 100
+# limit <- 100
 data <- subset(data, speed < limit)
 summary(data$speed)
 dropped <- datacount - nrow(data)
@@ -61,6 +60,7 @@ dataw0 <- subset(data, speed>0)
 hist(dataw0$speed, xlab="Speed", ylab="Density", main="Adapted speed distribution before coordinate cut-off")
 mean_before <- mean(dataw0$speed)
 median_before <- median(data$speed)
+sd_before <- sd(dataw0$speed)
 u80_before <- nrow(subset(data, speed>=80))
 plot(density(dataw0$speed), xlab="Speed", ylab="Density", main="Adapted speed density before coordinate cut-off") +
    abline(v=mean_before)
@@ -87,6 +87,7 @@ summary(data$speed)
 dataw0_2 <- subset(data, speed > 0)
 hist(dataw0_2$speed, xlab="Speed", ylab="Density", main="Adapted speed distribution after coordinate cut-off")
 mean_after <- mean(dataw0_2$speed)
+sd_after <- sd(dataw0_2$speed)
 median_after <- median(data$speed)
 u80_after <- nrow(subset(data, speed>=80))
 plot(density(dataw0_2$speed), xlab="Speed", ylab="Density", main="Adapted speed density after coordinate cut-off") +
